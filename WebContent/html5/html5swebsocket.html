@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5 websocket</title>
+</head>
+<body>
+<script type="text/javascript">
+//创建websocket对象
+var websocket=new WebSocket('ws://127.0.0.1:30000');
+//当websocket建立网络连接时触发该函数
+websocket.onopen=function(){
+	alert('链接已打开');
+	//发送消息
+	websocket.send('我是疯狂java用户');
+};
+//为onmessage事件绑定监听器,接收消息
+websocket.onmessage=function(evt){
+	//接收消息
+	alert('接收到消息是：'+evt.data);
+}
+
+</script>
+
+</body>
+</html>

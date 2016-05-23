@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!-- 改变头信息，可离线使用 -->
+<html manifest="html5sjs.manifest">
+<head>
+<meta charset="UTF-8">
+<title>HTML5 javaScript属性</title>
+<script type="text/javascript" src="../js/jquery-1.12.3.js"></script>
+</head>
+<body>
+	<a name="top"></a>
+	<a href="#bottom">返回底端</a>
+	<br />
+	<script type="text/javascript">
+	/*
+	浮点计算会产生问题，比较浮点数不要直接比较，应计算其差值，如果差值小于一个足够小的数即可认为相等
+	*/
+	/* var a=.3333;
+	var b=a*5;
+	alert(a*5);
+	alert((1.6665-b)<.00001);
+	if(navigator.cookieEnabled){
+		alert('支持cookie');
+	} 
+	
+	//函数名是函数的唯一标识，同名函数，后面的终会覆盖前面的
+	function test(){
+		alert('first test function,no param');
+	}
+	function test(par){
+		alert('second test function,have param:'+par);
+	}
+	
+	test();
+	
+	//遍历对象的属性值
+	function person(name,sex,age){
+		this.name=name;
+		this.sex=sex;
+		this.age=age;
+		this.info=function(){
+			alert('person info');	
+		};
+	}
+	
+	var p=new person('meng','male',23);
+	
+	for ( propName in p) {
+		document.writeln('p 对象的'+propName+'属性值为'+p[propName]+'<br/>')
+	}
+	
+	if(p instanceof person){
+		alert('person');
+	}
+	if(p instanceof Object){
+		alert('object');
+	}
+	*/
+
+		
+	
+	
+	</script>
+	<select id="mySelect" name="mySelect" size="6">
+	<option value="java">疯狂JAVA</option>
+	<option value="ssh">轻量级java ee企业应用实战</option>
+	<option value="ajax"  selected>疯狂Ajax讲义</option>
+	<option value="xml">疯狂XML讲义</option>
+	<option value="ejb">经典java ee企业应用实战</option>
+	<option value="workflow">疯狂Android讲义</option>
+	</select><br/>
+	<input type="button" value="第一个"  onclick="change(curTarget.options[0]);" />
+	<input type="button" value="上一个"  onclick="change(curTarget.options[curTarget.selectedIndex-1]);" />
+	<input type="button" value="下一个"  onclick="change(curTarget.options[curTarget.selectedIndex+1]);" />
+	<input type="button" value="最后一个"  onclick="change(curTarget.options[curTarget.length-1]);"/>
+	
+	<hr>
+	<ul id="d1">
+	<li>疯狂Java讲义</li>
+	</ul><br/>
+	<input type="button" value="复制节点"  onclick="cloneNode1()" />
+	<input type="button" value="前方添加"  onclick="inbefNode1()" />
+	
+	<script type="text/javascript">
+	//弹出标签的值
+	var curTarget=document.getElementById("mySelect");
+	function change(target){
+		alert(target.text);
+	}
+	
+	//复制节点
+	var cloneNode1=function(){
+		var ul=document.getElementById("d1");
+		//cloneNode(boolean deep)      deep=true:赋值当前节点的同时，复制该节点的全部后代节点。deep=false:仅赋值当前节点
+		var ajax=ul.firstChild.nextSibling.cloneNode(false);
+		ajax.innerHTML="复制疯狂java讲义";
+		ul.appendChild(ajax);
+	}
+	
+	//前方添加节点
+	var inbefNode1=function(){
+		var ul=document.getElementById("d1");
+		//cloneNode(boolean deep)      deep=true:赋值当前节点的同时，复制该节点的全部后代节点。deep=false:仅赋值当前节点
+		var ajax=ul.firstChild.nextSibling.cloneNode(false);
+		ajax.innerHTML="前方添加疯狂java讲义";
+		ul.insertBefore(ajax, ul.firstChild);
+	}
+	</script>
+	<hr>
+	<h2>简单客户端留言板</h2>
+	 <textarea rows="8" cols="50" id="msg" name="msg"></textarea><br/>
+	 <input type="button" value="添加留言" onclick="addMsg();"   />
+	 <input type="button" value="清除留言" onclick="clearMsg();"   />
+	 <hr>
+	 <table style="width: 550px">
+	 <tr>
+	 <td>留言内容</td>
+	 <td>留言时间</td>
+	 </tr>
+	 <tbody id="show"></tbody>
+	 </table>
+	 <script type="text/javascript">
+	 //加载留言信息
+	 var loadMsg=function(){
+		 var tb=document.getElementById("show");
+		 //清空原来显示的内容
+		 tb.innerHTML="";
+		 //遍历所有留言信息
+		 for (var i = 0; i < localStorage.length; i++) {
+			var key=localStorage.key(i);
+			var date=new Date();
+			date.setTime(key);
+			//获取留言的时间
+			var datestr=date.toLocaleDateString()+"&nbsp;"+date.toLocaleTimeString();
+			//获取留言内容
+			var value=localStorage.getItem(key);
+			var row=tb.insertRow(i);
+			//添加第一个单元格，显示留言内容
+			row.insertCell(0).innerHTML=value;
+			//添加第二个单元个，显示留言时间
+			row.insertCell(1).innerHTML=datestr;
+		}
+	 }
+	 //添加留言
+	 var addMsg=function(){
+		 var msgElement=document.getElementById("msg");
+		 var time=new Date().getTime();
+		 //以当前时间为key来保存留言信息
+		 localStorage.setItem(time, msgElement.value);
+		 msgElement.value="";
+		 alert("数据以保存");
+		 loadMsg();
+	 }
+	 //清除留言
+	 var clearMsg=function(){
+		 //清空local storage里保存的信息
+		 localStorage.clear();
+		 alert("全部留言信息已清楚");
+		 loadMsg();
+	 }
+	 //调用简单留言
+	 //window.onload=loadMsg();
+	 </script>
+	 <hr>
+	 <h2>复杂客户端留言板</h2>
+	 留言标题：<input id="title" name="title" type="text" size="60"   /><br/>
+	 留言信息：<textarea rows="8" cols="50" id="content" name="content"></textarea><br/>
+	 留言人：<input id="user" name="user" type="text" /><br/>
+	 <input type="button"  value="添加留言" onclick="addMsg1();"/>
+	 <input type="button"  value="清除留言" onclick="clearMsg1();" />
+	 <hr>
+	 <table>
+	 <tr>
+	 <th>留言标题</th><th>留言信息</th><th>留言人</th><th>留言时间</th>
+	 </tr>
+	 <tbody id="show1"></tbody>
+	 </table>
+	 <script type="text/javascript">
+	 //加载留言信息
+	 function loadMsg1(){
+		 var tb1=document.getElementById("show1");
+		 //清空原来显示的内容
+		 tb1.innerHTML="";
+		 //遍历留言信息
+		  for (var i = 0; i < localStorage.length; i++) {
+			var key=localStorage.key(i);
+			var date=new Date();
+			date.setTime(key);
+			//获取留言的时间
+			var datestr=date.toLocaleDateString()+"&nbsp;"+date.toLocaleTimeString();
+			//获取留言字符串
+			var value=localStorage.getItem(key);
+			//将字符串转换为json
+			var msg11=JSON.parse(value);
+			var row=tb1.insertRow(i);
+			//添加第一个单元格，显示留言标题
+			row.insertCell(0).innerHTML=msg11.title;
+			//添加第二个单元个，显示留言时间
+			row.insertCell(1).innerHTML=msg11.content;
+			//添加第三个单元格，显示留言人
+			row.insertCell(2).innerHTML=msg11.user;
+			//添加第四个单元个，显示留言时间
+			row.insertCell(3).innerHTML=datestr;
+		}
+	 }
+	 //添加留言信息
+	 function addMsg1(){
+		 var titleElement=document.getElementById("title");
+		 var contentElement=document.getElementById("content");
+		 var userElement=document.getElementById("user");
+		 //将留言标题、内容、用户封装成对象
+		 var msg1={
+				 title:titleElement.value,
+				 content:contentElement.value,
+				 user:userElement.value
+		 }
+		 var time=new Date().getTime();
+		 //以当前时间为key来保存留言信息,将js对象转换为json字符串
+		 localStorage.setItem(time, JSON.stringify(msg1));
+		 titleElement.value="";
+		 contentElement.value="";
+		 userElement.value="";
+		 alert("已保存");
+		 loadMsg1();
+	 }
+	 //清除留言信息
+	 function clearMsg1(){
+		 //清空本地storage数据
+		 localStorage.clear();
+		 alert("数据已清楚");
+		 loadMsg1();
+	 }
+	 //window.onload=loadMsg1();
+	 </script>
+	 <hr>
+	 <h2>检测客户端是否在线</h2>
+	 <script type="text/javascript">
+	 //为离线时间绑定时间监听器
+	 window.addEventListener("offline", function(){
+		 alert(window.location+ "<br/>您已变为离线状态！");
+	 }, true)
+	 
+	 //判断浏览器是否在线
+	 if(navigator.onLine){
+		 alert("在线");
+	 }else{
+		 alert("离线");
+	 }
+	 
+	 </script>
+	 <hr>
+	 <h2>测试applicationCache事件</h2>
+	 <div id="appmsg"></div>
+	 <script type="text/javascript">
+	 function aplitest(){
+		 var appmsg=document.getElementById("appmsg");
+		 //为applicationCache绑定事件
+		 applicationCache.onchecking=function(){
+			appmsg.innerHTML+="onchecking<br/>"; 
+		 };
+		 applicationCache.onnoupdate=function(){
+				appmsg.innerHTML+="onnoupdate<br/>"; 
+		};
+		applicationCache.ondownloading=function(){
+				appmsg.innerHTML+="ondownloading<br/>"; 
+		 };
+		 applicationCache.onprogress=function(){
+				appmsg.innerHTML+="onprogress<br/>"; 
+		 };
+		 applicationCache.onupdateready=function(){
+				appmsg.innerHTML+="onupdateready<br/>"; 
+		 };
+		applicationCache.oncached=function(){
+				appmsg.innerHTML+="oncached<br/>"; 
+		 };
+		 applicationCache.onerror=function(){
+				appmsg.innerHTML+="onerror<br/>"; 
+		 };
+	 }
+	 window.onload=aplitest();
+	 
+	 
+	 </script>
+	 
+	 
+	<br/>
+	<a href="#top">返回顶端</a>
+	<br />
+	<a name="bottom"></a>
+	
+</body>
+</html>

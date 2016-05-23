@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5新增的通用属性</title>
+<script type="text/javascript" src="./html5snew.js"></script>
+<!-- base 所有链接的基准链接 _blank所有链接在新窗口打开 href所有链接的基准链接 -->
+<base target="_blank" href="http://localhost/TestServer/html5/" />
+<!-- meta定义页面元信息 -->
+<meta name="author" content="LiuyangMeng">
+<!-- Pragma指定禁止浏览器从本地磁盘缓存中调阅页面内容，浏览器一旦离开该网站就无法脱机访问该页面 -->
+<meta http-equiv="Pragma" content="no-cache" />
+<!-- Refresh指定浏览器多长时间后自动刷新指定页面 -->
+<!-- 2秒后自动刷新本页面 -->
+<!-- <meta http-equiv="Refresh" content="2" />-->
+<!-- 2秒后自动刷新http://www.baidu.com -->
+<!-- <meta http-equiv="Refresh" content="2;URL=http://www.baidu.com" />-->
+<!-- Expires指定网页的过期时间，一旦过期，必须重新从服务器下载 -->
+<meta http-equiv="Expirse" content="Tue Apr 19 14:54:17 CST 2016" />
+<!-- Set-Cookie设置Cookie，如果网页过期，那么客户端上的Cookie也将被删除 -->
+<meta http-equiv="Set-Cookie"
+	content="name=value expires=Tue Apr 19 14:54:17 CST 2016,path=/" />
+<!-- content-Type设置网页内容类型和所用字符集 -->
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+</head>
+<body onload="init()">
+	<a name="top"></a>
+	<a href="#bottom">返回底端</a>
+	<br />
+	<!-- contentEditable 属性:如果为true，则浏览器允许开发者直接编辑该html元素的内容，该内容不是指那些原本就允许用户输入的表单
+元素，如文本框，文本域之类的，而是可以把<table> <div> 等元素变为可编辑状态 。具有可继承性-->
+	<div contenteditable="true"
+		style="width: 300px; border: 1px solid black;">
+		<!-- 该元素的父元素 contentEditable =true ，因此此表格也是可编辑的 -->
+		<table style="width: 280px; border-collapse: collapse;" border="1">
+			<tr>
+				<td>疯狂java讲义</td>
+				<td>疯狂android讲义</td>
+			</tr>
+			<!-- 显示指定contenteditable =false 不可编辑 -->
+			<tr contenteditable="false">
+				<td>轻量级java ee企业级开发</td>
+				<td>经典android企业级实战</td>
+			</tr>
+		</table>
+	</div>
+	<br />
+	<!-- 以下表格默认不可编辑，双击后该表格变为可编辑状态 -->
+	<table id="target" ondblclick="this.contentEditable=true;"
+		style="width: 280px; border-collapse: collapse;" border="1">
+		<tr>
+			<td>Java</td>
+			<td>PHP</td>
+		</tr>
+	</table>
+	<br />
+	<!-- designMode属性 相当于一个全局的contentEditable属性，默认为off，如果设置为on，则页面上所有可支持contentEditable属性
+的元素都变为可编辑状态 -->
+	<table ondblclick="document.designMode='on';">
+		<tr>
+			<td>Java</td>
+			<td>PHP</td>
+		</tr>
+	</table>
+	<div>点击上方表格编辑此div</div>
+	<br />
+	<div id="targethide" style="">文字内容</div>
+	<button
+		onclick="var target=document.getElementById('targethide'); target.hidden=!target.hidden;">显示/隐藏
+	</button>
+	<br />
+	<!-- spellcheck属性 true浏览器会负责对用户输入的文本内容执行输入检查，如果检查不通过，浏览器会对拼错单词进行提示 -->
+	<textarea rows="3" cols="40" spellcheck="true"></textarea>
+	<br />
+	<hr />
+	<!-- html5提供<article/><section/><nav/><aside/><header/><footer/>等文档结构元素 -->
+	<!-- 该元素用语代表页面上独立完整的一篇"文章" -->
+	<article>
+		<!-- 帖子的头部 -->
+		<header>
+			<h1>学习Android，必须先学习Java吗</h1>
+			<div>作者：crazystu</div>
+		</header>
+		<p>学习Android，必须先学习Java吗？ Android上的应用程序只能用Java编写吗？可以用C++吗？</p>
+		<!-- 帖子的"回复"部分，用section元素表示（对页面内容进行分块） -->
+		<section>
+			<!-- 每个article代表一个回复 -->
+			<article>
+				<!-- 回复的头部 -->
+				<header>
+					<h2>还是得学习Java</h2>
+					<div>作者:kongyeeku</div>
+				</header>
+				<p>
+					虽然Android不一定要使用java开发，可以选择javascript<br />
+					或NDK开发，但java毕竟是Android主要的开发语言，<br /> 因此间隙先学习java
+				</p>
+			</article>
+			<!-- 每个article代表一个回复 -->
+			<article>
+				<!-- 回复的头部 -->
+				<header>
+					<h2>java是基础</h2>
+					<div>作者:sun0098</div>
+				</header>
+				<p>
+					java为基础，还是要学习的，会事半功倍<br />
+				</p>
+			</article>
+		</section>
+		<!-- 帖子的"脚注" -->
+		<footer> 以上帖子和回复只代表其个人观点，不代表联盟观点或立场 </footer>
+		<!-- 该aside放在article内部，将作为该文章的"边栏"信息 -->
+		<aside>
+			<h3>关于楼主</h3>
+			<section>
+				<div>用户组：编程测试者</div>
+				<div>注册日期：2015-01-09</div>
+				<div>上次访问：2016-04-01</div>
+				<div>最后发言：2016-04-04</div>
+				<div>发帖数级别：小试牛刀</div>
+				<div>阅读权限：30</div>
+			</section>
+		</aside>
+	</article>
+	<!-- 该aside放在body内部，将作为这个html文档的"边栏"信息 -->
+	<aside>
+		<h3>页面导航</h3>
+		<nav>
+			<ul>
+				<li><a href="html5snew.html">查看相关内容</a></li>
+				<li><a href="">返回首页</a></li>
+				<li><a href="">返回本版</a></li>
+			</ul>
+		</nav>
+	</aside>
+	<!-- <figure/>可定义一个"图片区域",它代表网页上的独立区域，每个<figure/>元素内部只能包含一个<figcaption/>元素 -->
+	<figure style="border: 2px solid black; padding: 5px; width: 500px">
+		<figcaption>
+			<b>疯狂Java体系图书</b>
+		</figcaption>
+		<img src="../image/rbj.jpg" alt="人民币" />
+	</figure>
+	<!-- mark显示html页面中需要重点关注的内容 time显示被标注内容是日期，时间，或日期时间 -->
+	<mark>HTML5</mark>
+	是下一代的html规范
+	<br />
+	<time datetime="17:30">下午5点半</time>
+	<br />
+	<!-- <detail/>显示一段详细信息或某个主题的细节,配合<summary/>使用，<summary/>为<detail/>定义摘要信息，摘要信息默认是可
+见的，当用户点击摘要信息，浏览器会显示出<detail/>里详细内容。现只有chrome支持这2个元素  -->
+	<details>
+		<summary>芙蓉镇</summary>
+		《芙蓉镇》是一部好的电影，值得观看
+	</details>
+	<br />
+	<!-- <meter/>用于表示一个已经最大值和最小值的计数仪表，比如剩余电量，速度表等 -->
+	当前行车速度为:
+	<meter value="120" min="0" max="220" low="0" high="160">120</meter>
+	千米/小时.
+	<br /> 任务完成比例为:
+	<progress id="pro11" value="30" max="100" onchange="changepro()">30/100</progress>
+	<b id="prob11">30</b>%
+	<br /> 以下进行拖放事件的演示
+	<br />
+	<div id="source"
+		style="width: 80px; height: 80px; border: 1px solid black; background-color: #bbb;"
+		draggable="true">拖动我打开iosapple网站</div>
+	 <script type="text/javascript">
+		var source = document.getElementById("source");
+		//创建一个img对象
+		var myicon=document.createElement("img");
+		myicon.src="../image/gb.jpg";
+		
+		source.ondragstart = function(evt) {
+			//更改拖动时的图标
+			evt.dataTransfer.setDragImage(myicon,0,0);
+			//让拖动操作携带数据
+			evt.dataTransfer.setData("text/plain", "www.yilongpkg.com/iosapple"); 
+			
+		/* 	var dt=evt.dataTransfer;
+			dt.effectAllowed="link";
+			dt.setData("text/plain", "www.yilongpkg.com/iosapple");  */
+		}
+		document.ondragover = function(evt) {
+			//取消事件的默认行为(允许放)
+			return false;
+		}
+ 	/* 	document.ondrop=function(evt){
+			source.style.position="absolute";
+			source.style.left=evt.pageX+"px";
+			source.style.top=evt.pageY+"px";
+			
+			//取消事件的默认行为
+			return false;
+		}  */
+		
+	</script>
+ 
+<!-- data transfer 对象 -->
+通过拖放实现添加、删除<br/>
+<div style="width: 600px;border: 1px solid black;">
+<h2>可将喜欢的额项目拖入收藏夹</h2>
+<div draggable="true" ondragstart="dsHandler(event);">疯狂Java联盟</div>
+<div draggable="true" ondragstart="dsHandler(event);">疯狂软件教育</div>
+<div draggable="true" ondragstart="dsHandler(event);">关于我们</div>
+<div draggable="true" ondragstart="dsHandler(event);">疯狂成员</div>
+</div>
+<div id="dest" style="width: 400px;height: 400px;border: 1px solid black;float: left;">
+<h2 ondragleave="return false;">收藏夹</h2>
+</div>
+<img id="gb" draggable="false" src="../image/gb.jpg" alt="垃圾桶" style="float: left;" /><br/>
+
+ 
+<script type="text/javascript">
+var dest=document.getElementById("dest");
+
+//为拖动时间添加时间监听器
+var dsHandler=function(evt){
+	//将被拖动元素的innerHtml属性值设置成被托动的数据
+	evt.dataTransfer.setData("text/plain","<item>"+evt.target.innerHTML);
+}
+
+dest.ondrop=function(evt){
+	var text=evt.dataTransfer.getData("text/plain");
+	if(text.indexOf("<item>")==0){
+		//创建一个新的div
+		var newEle=document.createElement("div");
+		//以当前时间为该元素生成一个唯一的ID
+		newEle.id=new Date().getUTCMilliseconds();
+		//该元素内容为"拖"过来的数据
+		newEle.innerHTML=text.substring(6);
+		//设置该元素允许拖动
+		newEle.draggable="true";
+		//为该元素的开始拖动事件指定监听器
+		newEle.ondragstart=function(evt){
+			//将被拖动元素的id属性值设置为被拖动的数据
+			evt.dataTransfer.setData("text/plain","<remove>"+newEle.id)
+		}
+		dest.appendChild(newEle);
+	}
+}
+//当把被拖动元素"放"到垃圾桶上 时触发该方法
+document.getElementById("gb").ondrop=function(evt){
+	var id=evt.dataTransfer.getData("text/plain");
+	if(id.indexOf("<remove>")==0){
+		//根据"拖过来的数据，获取被拖动的元素
+		var target=document.getElementById(id.substring(8));
+		//删除被拖动的元素
+		dest.removeChild(target);
+	}
+}
+
+document.ondragover=function(evt){
+	//取消时间的默认行为
+	return false;
+}
+document.ondrop=function(evt){
+	//取消时间的默认行为
+	return false;
+}
+
+</script>
+
+
+
+
+	<a href="#top">返回顶端</a>
+	<br />
+	<a name="bottom"></a>
+</body>
+</html>

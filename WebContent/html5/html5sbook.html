@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5跨文档消息传递</title>
+</head>
+<body>
+<table>
+<tr>
+<th>书名</th><th>价格</th><th>作者</th><th>选择</th>
+</tr>
+<tbody id="bookTb"></tbody>
+</table>
+<script type="text/javascript">
+var srcWin,srcOrigin;
+
+window.onmessage=function(evt){
+	//忽略来自其他域名的跨域访问
+	if(evt.origin!='http://localhost'){
+		return;
+	}
+	srcWin=evt.source;
+	srcOrigin=evt.origin;
+	//接收消息
+	var books=evt.data;
+	var booktb=document.getElementById("bookTb");
+	for (var i = 0; i < books.length; i++) {
+		var row=booktb.insertRow(i);
+		row.insertCell(0).innerHTML=books[i].name;
+		row.insertCell(1).innerHTML=books[i].price;
+		row.insertCell(2).innerHTML=books[i].author;
+		row.insertCell(3).innerHTML="<input type='radio' name='choose' onclick='chooseItem(this);' />";
+	}
+}
+
+var chooseItem=function(td){
+	var currentRow=td.parentNode.parentNode;
+	srcWin.postMessage({
+		name:currentRow.cells[0].innerHTML,
+		price:currentRow.cells[1].innerHTML,
+		author:currentRow.cells[2].innerHTML
+	},srcOrigin);
+	window.close();
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5文件属性</title>
+<script type="text/javascript" src="../js/jquery-1.12.3.js"></script>
+</head>
+<body>
+	<!-- 文件上传支持多文件上传和通过js访问实际文件的内容 -->
+	浏览图片:
+	<input id="imageinput" type="file" multiple accept="image/*" />
+	<input type="button" value="显示文件信息" onclick="showDetails()" />
+	<br />
+	<div id="showd"></div>
+	<br />
+	<script type="text/javascript">
+		function showDetails() {
+			var imagefile = document.getElementById("imageinput");
+			//获取文件上传域内输入的多个文件
+			var filelist = imagefile.files;
+			//遍历文件
+			for (var i = 0; i < filelist.length; i++) {
+				var file = filelist[i];
+				var div = $('<div></div>');
+				//依次读取每个文件的文件名称，文件类型，文件大小
+				div.html("第" + (i + 1) + "个文件名称为:" + file.name + ",类型为:"
+						+ file.type + ",大小为:" + file.size);
+				//把div添加到页面
+				$('#showd').append(div);
+			}
+		}
+	</script>
+	<hr>
+	<!-- FileReader读取文件内容 readAsText(file,encoding) readAsBiaryString(file) readAsDataURL(file)  都是异步进行
+abort() 停止读取
+onloadstart 开始读取时触发
+onprogress 正在读取时触发，会多次触发，可做百分比
+onload 成功读取后触发
+onloadend 读取完毕触发，无论成功还是失败
+onerror 读取失败时触发-->
+	浏览文件:
+	<input type="file" id="readfile" />
+	<br />
+	读取进度:<progress id="pro" value="0" ></progress><b id="prob"></b>
+	<br />
+	<div id="results"></div>
+	<br />
+	<input type="button" value="中断" onclick="abort();" />
+	<br />
+	<input type="button" value="读取文本文件" onclick="readText();" />
+	<br />
+	<input type="button" value="读取二进制文件" onclick="readBinary();" />
+	<br />
+	<input type="button" value="读取DataURL文件" onclick="readURL();" />
+	<br />
+	<script type="text/javascript">
+	var changepro=function(evt){
+		 	if(evt<($('#pro').attr("max"))){
+		 		$('#prob').html(evt*100/($('#pro').attr("max"))+"%");
+			}else{ 
+				$('#prob').html("读取完毕!");
+			}
+	}
+
+		var reader = null;
+		//如果浏览器支持filereader对象
+		if (FileReader) {
+			reader = new FileReader();
+			//浏览器不支持
+		} else {
+			alert("您的浏览器暂时不支持FileReader");
+		}
+		
+		$('#pro').attr("max",document.getElementById("readfile").files[0].size);
+		
+
+		var readText = function() {
+			//使用正则表达式验证该文件是否为文本文件
+			//如果用户选择的第一个文件是文本文件  mime:text/plain      \w:[A-Z a-z 0-9_]
+			if (/text\/\w+/
+					.test(document.getElementById("readfile").files[0].type)) {
+				//以文本文件的方式读取用户选择的第一个文件
+				reader.readAsText(document.getElementById("readfile").files[0],
+						"utf-8");
+				//当reader读取文件时不断触发该事件
+				reader.onprogress=function(evt){
+					$('#pro').attr("value",evt.loaded);
+					changepro(evt.loaded);
+				}
+				
+			 	//当reader读取数据完成时会触发函数
+				reader.onload = function() {
+					//将读取文件结果写出
+					$('#results').html(reader.result);
+				} 
+				//不是文本文件
+			} else {
+				alert("您选择的不是文本文件。");
+			}
+		}
+		
+		var readBinary=function(){
+			//以二进制文件流方式读取用户选择的第一个文件
+			reader.readAsBinaryString(document.getElementById("readfile").files[0]);
+			//当reader读取文件时不断触发该事件
+			reader.onprogress=function(evt){
+				$('#pro').attr("value",evt.loaded);
+				changepro(evt.loaded);
+			}
+		 	//当reader成功读取数据完成时会触发函数
+			reader.onload = function() {
+				//将读取文件结果写出
+				//$('#results').html(reader.result);
+				$('#pro').attr("value",document.getElementById("readfile").files[0].size);
+				changepro(document.getElementById("readfile").files[0].size);
+			} 
+			//当reader读取数据完成时会触发函数
+			reader.onloadend = function() {
+				//将读取文件结果写出
+				//changepro(-1);
+			} 
+			//当reader读取数据错误时会触发函数
+			reader.onerror = function() {
+				alert("读取失败");
+			} 
+		}
+		
+		var readURL=function(){
+			//以DataURL方式读取用户选择的第一个文件
+			reader.readAsDataURL(document.getElementById("readfile").files[0]);
+			//当reader读取文件时不断触发该事件
+			reader.onprogress=function(evt){
+				$('#pro').attr("value",evt.loaded);
+				changepro(evt.loaded);
+			}
+			 //当reader读取数据完成时会触发函数
+			reader.onload = function() {
+				//将读取文件结果写出
+				$('#results').html(reader.result);
+			} 
+		}
+		
+		var abort=function(){
+			reader.abort();
+		}
+	</script>
+	<br />
+</body>
+</html>

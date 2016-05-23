@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5多线程 worker</title>
+</head>
+<body>
+<h2>计算质数</h2>	
+	<p>1-99999之间所有质数为:<div id="results"></div></p>
+	<hr>
+	<h2>根据用户输入计算之间的质数</h2>
+	起始值:<input type="text" id="startn" name="startn"/><br/>
+	结束值:<input type="text" id="endn" name="endn" /><br/>
+	<input type="button" value="开始计算"  onclick="zhishupar();"/>
+	<table id="showtable"  style="border: 1px solid #ccc">
+	</table>
+	
+<script type="text/javascript">
+//普通单线程处理，卡浏览器
+function zhishu(){
+	var count=0;
+	var n=0;
+	search:
+		while(n<999999){
+			n+=1;
+			for (var i = 2; i <=Math.sqrt(n) ; i++) {
+				//如果除以i的余数为0，则判断下一个
+				if(n%i==0){
+					continue search;
+				}
+			}
+			count++;
+			document.getElementById("results").innerHTML+=(n+",");
+			if(count%20==0){
+				document.getElementById("results").innerHTML+="<br/>";
+			}
+			
+		}
+}
+
+//使用worker启动多线程来计算收集质数
+function zhishuworker(){
+	var worker=new Worker('../js/workerzhishu.js');
+	var count=0;
+	worker.onmessage=function(event){
+		count++;
+		document.getElementById("results").innerHTML+=event.data+",";
+		if(count%20==0){
+			document.getElementById("results").innerHTML+="<br/>";
+		}
+	};
+}
+
+//根据用户输入传参worker计算质数
+function zhishupar(){
+	//获取用户输入的起始值和结束值
+	var start=parseInt(document.getElementById("startn").value);
+	var end=parseInt(document.getElementById("endn").value);
+	//如果start>end，直接退出
+	if(start>=end){
+		return;
+	}
+	var cal=new Worker('../js/workerpar.js');
+	var data={
+			start:start,
+			end:end
+	};
+	//向worker传递数据
+	cal.postMessage(JSON.stringify(data));
+	cal.onmessage=function(event){
+		var table=document.getElementById("showtable");
+		table.innerHTML="";
+		//获取返回数据
+		var result=event.data;
+		var nums=result.split(',');
+		//定义表格有多少列
+		var COLS_NUM=8;
+		for (var i = 0; i <= (nums.length-1)/COLS_NUM; i++) {
+			//添加行
+			var row=table.insertRow(i);
+			//循环插入8个值
+			for (var j = 0; j < COLS_NUM&&(i*COLS_NUM+j)<nums.length-1; j++) {
+				row.insertCell(j).innerHTML=nums[i*COLS_NUM+j];
+			}
+		}
+	};
+}
+//window.onload=zhishuworker();
+</script>	
+<hr>
+<h2>不同域之间发送复杂消息</h2>	
+<a href="#" onclick="chooseBook();">选择图书</a>
+<div id="bookresult"></div>
+<script type="text/javascript">
+var chooseBook=function(){
+	//打开一个新窗口
+	var targetWin=window.open('http://localhost:80/TestServer/html5/html5sbook.html','_blank', 'width=510,height=300');
+	//等待该窗口加载完毕，传递数据
+	targetWin.onload=function(){
+		//图书信息
+		var data=[
+		          {
+		        	  name:'疯狂JAVA讲义',
+		        	  price:109,
+		        	  author:'yeeku'
+		          },{
+		        	  name:'疯狂Android讲义',
+		        	  price:89,
+		        	  author:'yeekuandroid'
+		          },{
+		        	  name:'毛泽东思想',
+		        	  price:29,
+		        	  author:'LeeK'
+		          }
+		          ];
+		//向http://localhost:80/TestServer发送消息
+		targetWin.postMessage(data,'http://localhost/TestServer');
+	}
+	
+	//接收返回的消息
+	window.onmessage=function(evt){
+		//忽略其他域名的跨文档消息
+		if(evt.origin!='http://localhost'){
+			return;
+		}
+		var bookshow=document.getElementById("bookresult");
+		//显示消息
+		bookshow.innerHTML=('您选择的图书为：<br/>书名：'+evt.data.name+"<br/>价格："+evt.data.price+"<br/>作者："+evt.data.author);
+	}
+	
+}
+</script>	
+<hr>
+<h2>使用websocket通信</h2>
+<script type="text/javascript">
+//创建websocket对象
+var websocket=new WebSocket('ws://127.0.0.1:30000');
+//当websocket建立网络连接时触发该函数
+websocket.onopen=function(){
+	alert('链接已打开');
+	//发送消息
+	websocket.send('我是疯狂java用户');
+};
+//为onmessage事件绑定监听器,接收消息
+websocket.onmessage=function(evt){
+	//接收消息
+	alert('接收到消息是：'+evt.data);
+}
+
+</script>
+
+
+</body>
+</html>

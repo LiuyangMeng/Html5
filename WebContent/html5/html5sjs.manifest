@@ -1,0 +1,12 @@
+cache manifest
+#version 1
+
+cache:
+html5sjs.html
+#jquery-1.12.3.js
+
+network:
+*
+
+fallback:
+../js/jquery-1.12.3.js ../js/jquery-1.12.3.js

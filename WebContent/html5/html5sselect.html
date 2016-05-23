@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5级联样式单和css选择器</title>
+<script type="text/javascript" src="../js/jquery-1.12.3.js"></script>
+<style type="text/css">
+/*
+匹配被指定的元素被选中时
+*/
+::selection {
+	background-color: red;
+	color: white;
+}
+/*
+-ms- internet explorer的专属css
+ -moz-基于Gecko -firefox-专属css 
+ -o-Opera专用css
+ -webkit-基于Webkit -chrome，safari- 专属css
+ */
+::-moz-selection {
+	background-color: red;
+	color: white;
+}
+/*
+高亮显示被访问的目标 id=android
+*/
+:target {
+	background-color: #ff0;
+}
+/*
+选择器做减法
+*/
+ul li:not(#ajax){
+color: #999;
+font-weight: bold;
+}
+/*
+多所有class为solid的元素定义css样式
+*/
+.solid{
+	width: 160px;
+	text-align: center;
+	border-right: #222 3px solid;
+	border-top: #ddd 3px solid;
+	border-left: #ddd 3px solid;
+	border-bottom: #222 3px solid;
+	background-color: #ccc;
+}
+/*
+测试长单词和url地址中间换行
+*/
+.breakworrd{
+border: 1px solid #000000;
+width: 100px;
+height: 60px;
+}
+/*
+轮廓测试使用css
+*/
+.outline{
+font-size: 12pt;
+width: 300px;
+height: 80px;
+border: 1px solid black;
+}
+/*
+鼠标移动上来发生css属性动画变化
+*/
+.colorchange{
+width: 400px;
+height: 50px;
+border: 1px solid black;
+background-color: red;
+padding: 10px;
+transition:background-color 4s linear;
+-moz-transition:background-color 4s linear;
+-ms-transition:background-color 4s linear;
+}
+/*
+css发生的改变
+*/
+.colorchange:hover{
+background-color: yellow;
+}
+/*
+指定小花图片的left,top属性会采用平滑方式来改变
+*/
+img#target1{
+position: absolute;
+
+
+transition:left 5s linear,top 5s ease;
+
+transition:background-color 2s cubic-bezier(0.0,0.0,1.0,1.0) 2s,width 2s linear 2s,height 2s linear 2s;
+
+-moz-transition:background-color 2s cubic-bezier(0.0,0.0,1.0,1.0) 2s,width 2s linear 2s,height 2s linear 2s;
+}
+/*
+css3 提供的animation动画
+*/
+@-webkit-keyframes  'fkjava' {
+	/*定义动画开始处的关键帧*/
+	0%{
+	left:100px;
+	}
+	40%{
+	left:150px;
+	}
+	60%{
+	left:75px;
+	}
+	100%{
+	left:100px;
+	}
+}
+/*为div定义css样式*/
+.ani{
+	background-color: gray;
+	border: 1px solid black;
+	position: absolute;
+	left: 100px;
+	width: 70px;
+	height: 70px;
+	}
+/*为鼠标悬停div元素定义css样式*/
+.ani:hover{
+
+/*指定执行kfjava动画*/
+-webkit-animation-name:'fkjava' ;
+/*指定动画执行时间*/
+-webkit-animation-duration:5s;
+/*自动动画循环次数为1*/
+-webkit-animation-iteration-count:1;
+}	
+
+/*
+使用animation实现鱼眼效果
+*/
+.fish a:link{
+	text-decoration: none;
+}
+.fish>a{
+	display: inline-block;
+	text-align: center;
+	width: 120px;
+	padding: 8px;
+	background-color: #eee;
+	border: 2px solid black;
+	border-radius:20px;
+}
+/*
+定义一个关键帧
+*/
+@-webkit-keyframes 'fisheye'{
+	0%{
+	-webkit-transform:scale(1);
+	background-color: #eee;
+	border-radius:10px;
+	}
+	40%{
+	-webkit-transform:scale(1.5);
+	background-color: #bbb;
+	border-radius:10px;
+	}
+	100%{
+	-webkit-transform:scale(1);
+	background-color: #eee;
+	border-radius:10px;
+	}
+}
+
+.fish>a:hover{
+	-webkit-animation-name:'fisheye';
+	-webkit-animation-duration:3s;
+	/*指定动画循环无限次*/
+	-webkit-animation-iteration-count:infinite;
+}
+
+
+</style>
+<script type="text/javascript">
+/*
+ * 更换系统的背景色
+ */
+function changeBg(){
+	
+	//定义背景色为空字符串
+	var bgColor='';
+	//循环6次，生成一个随机数
+	for (var i = 0; i < 6; i++) {
+		bgColor+=""+Math.round(Math.random()*9);
+	}
+	//将随机生成的颜色赋值给页面背景色
+	document.body.style.backgroundColor="#"+bgColor;
+}
+//为页面增加单击事件触发绑定时间
+//document.onclick=changeBg;
+/*
+ * 增加立体效果
+ */
+function chg(){
+	document.getElementById("up").className="solid";
+}
+</script>
+</head>
+<body style="background-image: url('../image1/manako.jpg');background-attachment: fixed;">
+		<a name="top"></a> <a href="#bottom">返回底端</a><br />
+		<div>当这些字体被选中时，会变颜色</div>
+	<a href="#android">重量级android应用</a>
+	<div id="android">
+	<h2>疯狂android讲义</h2>
+	<p>本书较为详细的讲解了android的使用</p>
+	</div>
+	<ul>
+	<li id="java">疯狂java讲义</li>
+	<li id="android">android从入门到精通</li>
+	<li id="ajax">局部刷新讲解</li>
+	<li id="xml">疯狂xml讲义</li>
+	</ul>
+
+<input  type="button"  onclick="chg();" value="增加立体效果"/><br/>
+<div id="up" > 有立体效果的层</div><br/>
+<span style="text-shadow: 5px 5px 1px  #222,20px 20px 2px #222;">阴影的文字</span><br/>
+<!-- css提供圆角边框
+1:4个
+2:左上，右下 ；右上，左下
+3:左上；右上，左下；右下 -->
+<div class="breakworrd" style="word-wrap:normal;border-radius:20px 30px 40px;">our domain is http://www.lejingda.com</div><br/>
+<!-- css提供渐变边框 -->
+<div class="breakworrd" style="word-wrap:break-word;border: 10px solid red;-moz-border-top-colors: #555 #666 #777
+#888 #999 #aaa #bbb;-moz-border-bottom-colors: #aaa #bbb #ccc #ddd #eee #fff ;">our domain is http://www.lejingda.com</div><br/>
+
+<!-- resize属性(对所有设置了overflow的html组件有效)
+none:不允许通过拖动改变组件大小
+both:允许通过拖动改变组件大小
+horizontal:允许通过拖动改变宽度
+vertical:允许通过拖动改变高度
+inherit:继承来自父元素的resize属性值 -->
+<div style="width: 200px;height: 100px;background-color: #eee;overflow: auto;resize:both;border: 2px solid #555;">
+resize:both,允许通过拖动改变组件大小
+</div>
+<div style="width: 200px;height: 100px;background-color: #eee;overflow: auto;resize:horizontal;border: 2px solid #555;margin-top: 5px;">
+resize:horizontal,允许通过拖动改变宽度
+</div>
+<!-- position 用于设置目标对象的定位方式 z-index 浮层的层序，越大，越浮于上面 -->
+<div style="position: absolute;left: 40px;top: 20px;width: 180px;height: 88px;z-index: 2;background-color: #ccc">
+使用position：absolute，z-index:2，该层完全漂浮在页面之上
+</div>
+<div style="position:relative;left: 50px;top: 10px;width: 180px;height: 88px;z-index: 3;background-color: #999">
+使用position：relative，z-index:3，该层漂浮在页面之上
+</div>
+<div style="position:static; ;left: 60px;top: 20px;width: 180px;height: 88px;z-index: 1;background-color: #666">
+使用position：static，z-index:1,left和top失效
+</div>
+outline:rgba(50,50,50,0.5) solid 10px<br/><br/>
+<div class="outline" style="outline: rgba(50,50,50,0.5) solid 10px;">
+宽度为10的灰色实线轮廓
+</div>
+outline:rgba(50,50,50,0.5) groove 16px<br/><br/>
+<div class="outline" style="outline: rgba(50,50,50,0.5) groove 16px;">
+宽度为16的凹槽实线轮廓
+</div>
+outline:rgba(50,50,50,0.5) ridge 16px<br/><br/>
+<div class="outline" style="outline: rgba(50,50,50,0.5) ridge 16px;">
+宽度为16的凸槽实线轮廓
+</div>
+outline:rgba(50,50,50,0.5) ridge 16px ;outline-offset:10px<br/><br/>
+<div class="outline" style="outline: rgba(50,50,50,0.5) ridge 16px;outline-offset:10px;">
+宽度为16的凸槽实线轮廓,偏移10
+</div>
+<!--overflow: 控制组件的滚动条 
+overflow:visible 组件既不剪贴也不添加滚动条。默认值
+overflow:auto 组件不够容纳时自动添加滚动条，允许用户通过滚动条来查看内容
+overflow:hidden 组件自动裁剪那些不够空间显示的内容
+overflow:scroll 组件总是显示滚动条
+overflow-x:只控制水平方向的显示方式
+overflow-y:只控制垂直方向的显示方式
+-->
+<div style="width: 200px;height: 80px;border: 1px solid black;white-space: nowrap;margin: 10px;">
+<h3>不设置overflow属性</h3>
+测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字
+</div>
+<div style="width: 200px;height: 80px;border: 1px solid black;white-space: nowrap;margin: 10px;overflow: hidden;">
+<h3>设置overflow属性:hidden</h3>
+测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字
+</div>
+<div style="width: 200px;height: 80px;border: 1px solid black;white-space: nowrap;margin: 10px;overflow: auto;">
+<h3>设置overflow属性:auto</h3>
+测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字
+</div>
+<div style="width: 200px;height: 80px;border: 1px solid black;white-space: nowrap;margin: 10px;overflow-x: hidden;">
+<h3>设置overflow-x属性:hidden</h3>
+测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字
+</div>
+<!-- transition 动画 某个属性发生改变时，改变会经历一段时间，以平滑的方式发生改变
+transition-property:指定对html元素的哪个css属性进行平滑渐变处理
+transition-duration:指定平滑渐变的持续时间
+transition-timing-function:指定渐变的速度
+	ease:slow-fast-max-slow,cubic-bezier(0.25,0.1,0.25,0.1)
+	linear:uniform speed,cubic-bezier(0.0,0.0,1.0,1.0)
+	ease-in:slow-fast,cubic-bezier(0.42,0.0,1.0,1.0)
+	ease-out:fast-slow,cubic-bezier(0.0,0.0,0.58,1.0)
+	ease-in-out:slow-fast-max-slow,cubic-bezier(0.42,0.0,0.58,1.0)
+	cubic-bezier(x1,y1,x2,y2):贝济曲线控制:(0.0,0.0)表示属性还未开始变化，时间未流逝，(1.0,1.0)表示属性改变已完成，时间也耗尽。横坐标代表
+			在不同时间点上，纵坐标代表属性完成值。
+transition-delay:指定延迟时间 -->
+
+<div class="colorchange">
+鼠标移上来会发生颜色渐变
+</div>
+
+<img alt="小花" src="../image/flower-128.jpg" id="target1" />
+
+<button onclick="zoom(2,'blue');" style="margin-top: 400px;">放大</button>
+<button onclick="zoom(0.5,'green');">缩小</button>
+<button onclick="zoom(1,'red');">恢复</button>
+<script type="text/javascript">
+var target1=document.getElementById("target1");
+/*
+ * 小花移动
+//target1.style.left="0px";
+//target1.style.top="0px";
+//为鼠标按下事件绑定监听器
+ document.onmousedown=function(evt){
+	//将鼠标的xy坐标赋值给小花的left，top
+	target1.style.left=evt.pageX+"px";
+	target1.style.top=evt.pageY+"px";
+} */
+
+
+/**
+ * 小花放大缩小
+ */
+//定义初始大小
+var originWidth=200;
+var originHeight=160;
+var zoom=function(scale,bgColor){
+	//设置变化后的宽高
+	target1.style.width=originWidth*scale+"px";
+	target1.style.height=originHeight*scale+"px";
+	//设置背景
+	target1.style.backgroundColor=bgColor;
+}
+</script>
+<!-- css3 提供的animation动画
+animation-name:提供动画名称
+animation-duration:动画的持续时间
+animation-timing-function:动画的变化速度
+animation-delay:动画延迟多长时间开始执行
+animation-iteration-count:动画的循环次数 -->
+<div class="ani">鼠标悬停，开始动画</div>
+<!-- 使用animation 实现鱼眼效果 -->
+<div class="fish" style="margin-top: 200px;">
+<a href="http://www.yilongservice.com/iosapple">乐泾达苹果</a>
+<a href="http://www.yilongservice.com/iosrom">预装查询系统</a>
+<a href="http://www.lejingda.com">乐泾达官网</a>
+<a href="http://www.lejingda.com">招聘通知</a>
+</div>
+
+<br/><br /> <a href="#top">返回顶端</a> <br /> <a name="bottom"></a>
+</body>
+</html>

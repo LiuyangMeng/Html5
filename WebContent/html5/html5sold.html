@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5新功能</title>
+</head>
+<body>
+<a name="top"></a>
+<a href="#bottom">返回底端</a><br/>
+自动获取焦点<br/>
+姓名：<input type="text"/><br/>
+<!-- 自动获取焦点 -->
+价格：<input type="text"  autofocus="autofocus"/><br/>
+<time>2016-04-12 12:00:00</time><br/>
+<mark>这是mark标签</mark><br/>
+<bdo dir="ltr"> 从左向右的文字</bdo><br/>
+<bdo dir="rtl">从右向左的文字</bdo><br/>
+<abbr title="缩写">表示该段文字的缩写</abbr><br/>
+<address>这是一个地址,斜体</address><br/>
+<!-- 引用一段带换行的，大段文本，浏览器会使用缩进的方式显示
+cite 该属性指定该引用文本说引用的网址URL -->
+<blockquote cite="http://www.baidu.com">0 正常,1为可处理异常,2为密码不正确,3为生日信息错误,4为被停用,5为尚未在iTunesStore使用,6账号被锁,7其他错误,
+8连续5次修复失败,9需要验证,10被禁用,11需要确认信息,12邮件没有收到,13不是苹果账号</blockquote>
+<!-- 引用一段不带换行的，较短的文本，浏览器会为这段被引用文本添加引号 -->
+<q>真是一个短的引用</q><br/>
+<!-- 用于表示作品(一本书，一部电影，一首歌曲)的标题，浏览器会用斜体字显示所包含的文本 -->
+<cite>《唐诗三百首》</cite><br/>
+<!-- 这是一段计算机代码 -->
+<code>public class Timer1 {
+	public static void main(String[] args) {
+	}
+}</code><br/>
+<!-- 定义一个专业术语，浏览器会用粗体或斜体显示 -->
+<dfn>JAVA编程思想</dfn><br/>
+<!-- 定义文档中被删除的文本。浏览器会以中划线显示 -->
+我的<del>明智</del>名字叫：Jhon<br/>
+<!-- 定义文档中插入的文本。浏览器会以下划线显示 
+cite 这个是url，该url对应的 文本解释该文本被删除或插入的原因
+datetime 定义文本被删除或插入的日期,时间-->
+<ins cite="http://www.baidu.com" datetime="2016-04-12  16:00:00">该文字被为插入数据，有下划线</ins><br/>
+<!--该元素所包含的文本已经进行了"预格式化"，该元素包含文本中的空格，回车，tab键和其他格式字符会被保留下来，但是该元素会处理内部的html元素  -->
+<pre>不会处理内部的空格  ，换行
+和制表符	，但是能处理html元素,如超链接：<a href="">链接</a></pre>
+<samp>定义示范文本内容</samp><br/>
+<kbd>定义键盘文本，表示该文本是通过键盘输入的，常在计算机使用和说明中使用</kbd><br/>
+<!-- 表示变量，浏览器通常用斜体字显示 -->
+<var>i</var>,<var>j</var>&nbsp;这些都是常见的变量
+<hr>
+
+<a href="http://www.baidu.com"><b>跳转到百度首页</b></a><br/>
+<a href="http://www.baidu.com" target="_blank"><b>跳转到百度首页,新窗口</b></a><br/>
+<a href="mailto:mengliuyang@delonghutong.com">写信给我</a><br/>
+<a href="#top">回到本页面首页</a> <br/>
+<a href="./href.html#sevennum" target="_blank">回到另一个页面7777处</a> <br/>
+<hr>
+<ul>
+<li>无序列表1</li>
+<li>无序列表2</li>
+</ul>
+<ol style="list-style-type: decimal;" start="5">
+<li>有序列表1</li>
+<li>有序列表2</li>
+</ol>
+<dl>
+<dt>主标题1</dt>
+<dt>次标题1</dt>
+<dd>dt定义标题列表项</dd>
+<dd>dd定义普通列表项</dd>
+</dl>
+<hr>
+<img src="../image/rbj.jpg"  alt="人民币" /><br/>
+<img src="../image/rbj.jpg"  width="240px" height="120px" alt="人民币"/><br/>
+<!-- 定义图片，使用指定的图片映射 -->
+<img src="../image/rbj.jpg"  width="240px" height="120px"  border="1"  usemap="#test" alt="人民币" />
+<!-- 定义图片映射 -->
+<map name="test"  id="test">
+<!-- 为图片映射定义2个区域 -->
+<area  shape="circle" coords="57,55,25" href="http://www.baidu.com" alt="baidu"/>
+<area shape="poly"  coords="140,0,180,0,180,100,140,100"  href="http://www.yilongpkg.com/iosapple"   alt="iosapple"/>
+<area shape="rect"   coords="0,0,20,120"  href="http://www.yilongpkg.com/iosrom"  alt="iosrom">
+</map><br/>
+<!-- 表格相关属性 -->
+<table style="background-color: black;border-collapse: separate;border-spacing: 1px;">
+<!-- 定义标题 -->
+<caption><b>疯狂Java图书</b></caption>
+<!-- 定义所有列的背景色都是白色 -->
+<colgroup style="background-color: white;">
+<!-- 设置第一列宽160px -->
+<col style="width: 160px;"/>
+<!-- 定义横跨两列，设置这两列各宽100px -->
+<col span="2" style="width: 100px;"/>
+</colgroup>
+<!-- 定义表格头-->
+<thead>
+<tr>
+<td>书名</td>
+<td>作者</td>
+<td>价格</td>
+</tr>
+</thead>
+<!-- 定义表格脚 -->
+<tfoot>
+<tr>
+<td colspan="3"  style="text-align: right;">现总价：2本图书</td>
+</tr>
+</tfoot>
+<!-- 定义表格主体 -->
+<tbody>
+<tr>
+<td>疯狂java讲义</td>
+<td>李刚</td>
+<td>109</td>
+</tr>
+<tr>
+<td>轻量级java ee企业应用实战</td>
+<td>李刚</td>
+<td>89</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<!-- HTML5 不推荐使用框架，删除了freamset  frame noframes 标签，但是保留了iframe -->
+<iframe src="href.html" width="500px" height="400px"></iframe>
+
+<a name="bottom"></a>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5多媒体支持</title>
+<script type="text/javascript" src="../js/jquery-1.12.3.js"></script>
+</head>
+<body>
+	<form action="http://www.baidu.com" id="firstform">
+		<a name="top"></a> <a href="#bottom">返回底端</a><br />
+		<h2>音频测试</h2>
+		<audio src="../media/痴情冢.mp3" controls loop>您的浏览器不支持
+		</audio>
+		<h2>视频测试</h2>
+		<video src="../media/pass.mp4" controls="controls" preload="auto"
+			poster="../image/psss.png" width="500" height="280">您的浏览器不支持
+		</video>
+		<h2>音频自动选择</h2>
+		<audio controls="controls">
+			<source src="../media/leaving.mp3" type="audio/mpeg" />
+			<source src="../media/痴情冢.mp3" type="audio/mpeg" />
+		</audio>
+		<!-- 使用javascript控制媒体播放 -->
+		<script type="text/javascript">
+			//定义能播放的所有音乐
+			var musics = [ "../media/loveyou.mp3", "../media/seven.mp3",
+					"../media/bei.mp3", "../media/leaving.mp3",
+					"../media/痴情冢.mp3" ];
+			//定义正在播放的音频文件的索引
+			var index = 0;
+			//记录顺序播放，随机播放的变量
+			var playType;
+			window.onload = function() {
+				var typeSel = document.getElementById("typeSel");
+				//当用户更改下拉菜单的选项时，改变播放方式
+				typeSel.onchange = function() {
+					window.playType = typeSel.value;
+				}
+
+				var player = document.getElementById("player");
+
+				//页面加载时播放第一个音频文件
+				player.src = musics[index];
+				player.onended = function() {
+					if (playType == "random") {
+						//计算一个随机数
+						index = Math.floor(Math.random() * musics.length);
+						//随机播放一个音频文件
+						player.src = musics[index];
+					} else {
+						//播放下一个音频文件
+						player.src = musics[++index % musics.length]
+					}
+					//播放
+					player.play();
+				}
+				//在控制条上暂停时触发
+				player.onpause = function() {
+					document.getElementById("pauseb").innerHTML = "开始";
+				}
+				//在音乐条上开始时触发
+				player.onplay = function() {
+					document.getElementById("pauseb").innerHTML = "暂停";
+				}
+			}
+			function next() {
+				var player = document.getElementById("player");
+				player.pause();
+				player.src = musics[++index % musics.length];
+				player.play();
+			}
+			function previous() {
+				var player = document.getElementById("player");
+				player.pause();
+				if (index == 0) {
+					index = musics.length;
+				}
+				player.src = musics[--index % musics.length];
+				player.play();
+			}
+			function pause() {
+				var player = document.getElementById("player");
+				if (player.paused) {
+					player.play();
+					document.getElementById("pauseb").innerHTML = "暂停";
+				} else {
+					player.pause();
+					document.getElementById("pauseb").innerHTML = "开始";
+				}
+			}
+		</script>
+		<h2>使用javascript控制媒体播放</h2>
+		<select id="typeSel" style="width: 160px">
+			<option value="sequence" selected>顺序播放</option>
+			<option value="random">随机播放</option>
+		</select><br />
+		<audio id="player" controls>您的浏览器不支持audio元素
+		</audio>
+		<br />
+		<button onclick="previous()" type="button">上一首</button>
+		<button onclick="pause()" type="button" id="pauseb">开始</button>
+		<button onclick="next()" type="button">下一首</button><br/>
+		
+		
+		<!-- 网络上找到的控制器 -->
+		<audio src="../media/leaving.mp3" id="audio"
+			controls="controls"></audio><br/>
+		<a href="javascript:void(0);" onclick="getCurrentTime('firefox');">获取播放时间</a>
+		<a href="javascript:void(0);" onclick="playOrPaused('firefox',this);">播放</a>
+		<a href="javascript:void(0);"
+			onclick="hideOrShowControls('firefox',this);">隐藏控制框</a> <a
+			href="javascript:void(0);" onclick="muted('firefox',this);">开启静音</a>
+		<input type="button" value="+" id="upVol"
+			onclick="vol('firefox' , 'up' , this )" />音量<input type="button"
+			value="-" onclick="vol('firefox' , 'down' ,this )" />
+
+		当前音量：<span id="nowVol"> - </span>
+		
+		<script type="text/javascript">
+			var audio;
+			window.onload = function() {
+				initAudio();
+			}
+			var initAudio = function() {
+				audio = document.getElementById('audio');
+			}
+			function getCurrentTime(id) {
+				alert(parseInt(audio.currentTime) + '：秒');
+			}
+
+			function playOrPaused(id, obj) {
+				if (audio.paused) {
+					audio.play();
+					obj.innerHTML = '暂停';
+					return;
+				}
+				audio.pause();
+				obj.innerHTML = '播放';
+			}
+
+			function hideOrShowControls(id, obj) {
+				if (audio.controls) {
+					audio.removeAttribute('controls');
+					obj.innerHTML = '显示控制框'
+					return;
+				}
+				audio.controls = 'controls';
+				obj.innerHTML = '隐藏控制框'
+				return;
+			}
+			function vol(id, type, obj) {
+				if (type == 'up') {
+					var volume = audio.volume + 0.1;
+					if (volume >= 1) {
+						volume = 1;
+
+					}
+					audio.volume = volume;
+				} else if (type == 'down') {
+					var volume = audio.volume - 0.1;
+					if (volume <= 0) {
+						volume = 0;
+					}
+					audio.volume = volume;
+				}
+				document.getElementById('nowVol').innerHTML = returnFloat1(audio.volume);
+			}
+			function muted(id, obj) {
+				if (audio.muted) {
+					audio.muted = false;
+					obj.innerHTML = '开启静音';
+				} else {
+					audio.muted = true;
+					obj.innerHTML = '关闭静音';
+				}
+			}
+			//保留一位小数点
+
+			function returnFloat1(value) {
+				value = Math.round(parseFloat(value) * 10) / 10;
+				if (value.toString().indexOf(".") < 0) {
+					value = value.toString() + ".0";
+				}
+				return value;
+			}
+		</script>
+
+		<br /> <a href="#top">返回顶端</a> <br /> <a name="bottom"></a>
+	</form>
+</body>
+</html>

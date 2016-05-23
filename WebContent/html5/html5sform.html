@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5表单相关元素和属性</title>
+<script type="text/javascript" src="../js/jquery-1.12.3.js"></script>
+</head>
+<body>
+<form action="http://www.baidu.com"  id="firstform">
+	<a name="top"></a>
+	<a href="#bottom">返回底端</a>
+	<br />
+	<!-- 使用tabIndex 让用户无需使用鼠标，就可以让输入焦点在各表单控件上转移 -->
+	第一次tab位置：<input tabindex="1"/><br/>
+	第三次tab位置：<input tabindex="3"/><br/>
+	第二次tab位置：<input tabindex="2"/><br/>
+	第四次tab位置：<input tabindex="4" size="8"/><br/>
+	<!-- input 的type类型为image时，创建一个图像控件，该控件单击后将导致表单立即被提交 -->
+	图像控件，单击提交表单：
+	<input type="image" width="100px" height="50px" src="../image/rbj.jpg" /><br/>
+	<!-- label 使用隐式for属性关联控件，显示控件关联.单击控件前标签，相关联控件会自动获取焦点 -->
+	<label for="username">单行文本框:</label><input id="username"/><br/>
+	<label>密码框：<input type="password"/> </label><br/>
+	<!-- 图片按钮 -->
+	<label>图片按钮:</label> <button type="button"><img alt="just for test" src="../image/button.gif"  width="40px" height="30px"> </button><br/>
+	<!-- select multiple="multiple" size="4" 允许多选,列表框高度为4 -->
+	多选框测试:<select id="musel" name="musel" multiple="multiple"  size="4">
+	<optgroup label="java系列">
+	<option value="java基础">java基础</option>
+	<option value="从无到有学java">从无到有学java</option>
+	<option value="高级java">高级java</option>
+	</optgroup>
+	<optgroup label="php">
+	<option value="入门php">入门php</option>
+	<option value="php经典案例">php经典案例</option>
+	<option value="架构php">架构php</option>
+	</optgroup>
+	</select>
+&nbsp;&nbsp;<button type="button" onclick="alert($('#musel').val());">弹出多选值</button><br/>
+</form>
+<!-- form 属性，为控件添加form标签，即使该标签不在form中，但是表单提交时仍可以提交 -->
+我不在form标签内，但是我form属性指定了，也能提交:<textarea rows="2" cols="20" form="firstform"></textarea><br/>
+<!-- formaction 一个表单有2个以上提交按钮，不同按钮提交到不同地址。之前是通过js更改action实现。  类似的formenctype,formmethod
+ formtarget-->
+<form method="post">
+formaction不同提交按钮提交到不同的后台地址
+<button type="submit"  formaction="regist/reg.html">注册</button>
+<button type="submit"  formaction="login/log.html">登陆</button>
+</form>
+<!-- autofocus 页面打开时自动获得焦点 -->
+<!-- placeholder 类似文本框输入前提示信息，开始输入，提示信息自动消失。之前使用js实现-->
+输入信息，默认自动消失:<input type="text" placeholder="请输入您的账号名称"/><br/>
+<!-- list datalist 二者同时使用,datalist相当于一个看不见的select，使用datalist填充input，或者自己输入  
+	autocomplete on off  可禁用datalist下拉菜单(Opera支持)-->
+选择你喜欢的或者直接输入:<input  type="text" list="likes" placeholder="你喜欢什么？"  autocomplete="on"/>
+<datalist id="likes">
+<option value="一个智能手机">一个智能手机</option>
+<option value="一件漂亮的衣服">一件漂亮的衣服</option>
+<option value="一本有意义的书">一本有意义的书</option>
+<option value="一辆炫酷的自行车">一辆炫酷的自行车</option>
+</datalist><br/>
+<!-- 功能丰富的input -->
+color颜色选择器:<input type="color" id="colorinput"  form="firstform"/><br/>
+date日期文本框:<input type="date"  name="date"/><br/>
+time时间文本框:<input type="time" /><br/>
+datatime日期时间文本框:<input type="datetime" /><br/>
+datatime-local文本框:<input type="datetime-local" /><br/>
+month文本框:<input type="month" /><br/>
+week文本框:<input type="week" /><br/>
+email文本框:<input type="email" /><br/>
+tel文本框:<input type="tel" /><br/>
+url文本框:<input type="url" /><br/>
+number文本框:<input type="number" /><br/>
+range文本框:<input type="range" min="0"  max="20" step="2"  id="rangeinput" name="rangeinput"  form="firstform"/><br/>
+search文本框:<input type="search" /><br/>
+
+<!-- output 参数 仅用于显示，不会生成请求参数.必须属于某个表单 -->
+output标签:<output form="firstform"  for="rangeinput" onforminput="innerHTML=rangeinput.value;"></output><br/><br/>
+<!-- 调用checkValidity进行校验 -->
+<form action="www.baidu.com" id="secondform">
+生日:<input type="date" id="birth"  /><br/>
+邮件地址:<input type="email" id="email" /><br/>
+<input type="submit"  value="提交校验" onclick="return check();" />
+<script type="text/javascript">
+var check=function(){
+	return commenCheck("birth", "生日", "字段必须为有效的日期")&&commenCheck("email", "邮件地址", "字段必须符合邮件地址要求");
+	
+}
+var commenCheck=function(field,fieldname,tip){
+	var target=document.getElementById(field);
+	//字段为空
+	if(null==target||target.value.trim()==""){
+		alert(fieldname+"字段必须填写!");
+		return false;
+	//调用checkValidity()进行输入校验
+	}else if(!target.checkValidity()){
+		alert(fieldname+tip);
+		return false;		
+	}
+	return true;
+}
+</script>
+</form>
+
+<!-- hutml5新增的客户端校验 required 必填属性  pattern 正则校验 min，max，step 对数字类型，日期类型的input有效 
+setCustomValidity() 自定义默认错误信息-->
+图书名称:<input type="text"  required="required"  form="firstform"/><br/>
+图书ISBN:<input id="isbn" type="text" required="required" pattern="\d{3}-\d-\d{3}-\d{5}" form="firstform"/><br/>
+图书价格:<input  type="number"  required="required" max="150" min="10" step="5" form="firstform"/><br/>
+<input type="submit"  form="firstform" value="提交校验"   onclick="checkn();"/>
+<input type="submit"  form="firstform" value="忽略校验提交" formnovalidate /><br/>
+<script type="text/javascript">
+function checkn(){
+	if(!document.getElementById("isbn").checkValidity()){
+		document.getElementById("isbn").setCustomValidity("图书ISBN格式不正确，\n必须符合XXX-X-XXX-XXXXX的格式");
+	}
+	
+	
+}
+
+</script>
+
+
+	<br/>
+	<a href="#top">返回顶端</a>
+	<br />
+	<a name="bottom"></a>
+	
+</body>
+</html>

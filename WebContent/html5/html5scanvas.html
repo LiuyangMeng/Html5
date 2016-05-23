@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5绘图支持</title>
+<script type="text/javascript" src="../js/jquery-1.12.3.js"></script>
+</head>
+<body>
+<form action="http://www.baidu.com"  id="firstform">
+	<a name="top"></a>
+	<a href="#bottom">返回底端</a><br />
+	<!-- canvas 该元素专门用户绘制图形 -->
+	<h2>画图入门</h2>
+	<canvas id="mc"  width="300" height="180" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas=document.getElementById("mc");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx=canvas.getContext("2d");
+	//设置填充颜色
+	ctx.fillStyle="#f00";
+	//绘制矩形 左上坐标，宽，高  pw,ph,w,h
+	ctx.fillRect(30,40,80,100);
+	</script>
+	<h2>绘制字符串</h2>
+	<canvas id="ms"  width="500" height="200" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas1=document.getElementById("ms");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx1=canvas1.getContext("2d");
+	//设置填充颜色
+	ctx1.fillStyle="#00f";
+	ctx1.font="italic 50px 隶书";
+	ctx1.textBaseline="top";
+	//填充字符串
+	ctx1.fillText("疯狂学习HTML5",0,0);
+	ctx1.strokeStyle="#f0f";
+	ctx1.font="bold 45px 宋体";
+	//绘制字符串的边框
+	ctx1.strokeText("重量级的html课程",0,50);
+	//设置阴影模糊度
+	ctx1.shadowBlur=5.6;
+	//设置阴影颜色
+	ctx1.shadowColor="#222";
+	//设置阴影在xy方向的偏移
+	ctx1.shadowOffsetX=10;
+	ctx1.shadowOffsetY=-3;
+	ctx1.fillText("测试阴影效果",0,100);
+	</script>
+		<h2>使用路径绘制图形</h2>
+	<canvas id="mp"  width="800" height="350" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas1=document.getElementById("mp");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx1=canvas1.getContext("2d");
+	for (var i = 0; i < 10; i++) {
+		//开始定义路径
+		ctx1.beginPath();
+		//添加一段圆弧
+		ctx1.arc(i*25,i*25,(i+1)*8,0,Math.PI*2,true);
+		//设置填充颜色
+		ctx1.fillStyle="rgba(255,0,255,"+(10-i)*0.1+")";
+		//填充当前路径
+		ctx1.fill();
+		//关闭路径
+		ctx1.closePath();
+	}
+	/*
+	绘制圆角矩形
+	x y 圆角矩形左上角的坐标
+	width heigh 控制圆角矩形的宽，高
+	radius 控制圆角矩形的四个圆角的半径
+	*/
+	function createRoundRect(ctx,x,y,width,heigh,radius){
+		ctx.beginPath();
+		//移动到左上角
+		ctx.moveTo(x+radius,y);
+		//添加一条连接到右上角的线段
+		ctx.lineTo(x+width-radius,y);
+		//添加一段圆弧
+		ctx.arcTo(x+width,y,x+width,y+radius,radius);
+		//添加一条链接到右下角的线段
+		ctx.lineTo(x+width,y+heigh-radius);
+		//添加一段弧
+		ctx.arcTo(x+width,y+heigh,x+width-radius,y+heigh,radius);
+		//添加一条连接到左下的线段
+		ctx.lineTo(x+radius,y+heigh);
+		//添加一段弧
+		ctx.arcTo(x,y+heigh,x,y+heigh-radius,radius);
+		//添加一条连接到左上的线段
+		ctx.lineTo(x,y+radius);
+		//添加一段弧
+		ctx.arcTo(x,y,x+radius,y,radius);
+		ctx.closePath();
+	}
+	ctx1.strokeStyle="#00f";
+	ctx1.lineWidth=3;
+	createRoundRect(ctx1, 310, 10, 200, 120, 20);
+	ctx1.stroke();
+	
+	/*
+	绘制多角星
+	n 绘制n角星(通常为奇数)
+	dx,dy 控制n角星位置(圆点)
+	size 控制n角星大小(半径)
+	*/
+	function createStar(ctx,n,dx,dy,size){
+		 //开始划线
+	 	ctx.beginPath();
+		//360度均分为n份后乘以2
+		var dig=2*(2*Math.PI/n);
+		ctx.moveTo(dx,size+dy);
+		//需要确定n个点
+	 	for (var i = 0; i <=n; i++) {
+	 			//x y为动点 确定定点坐标
+	 		//x=x0+r*cos@  y=y0+sin@
+	 		//x=dx+size*cos(i*dig) y=dy+size*cos(i*dig)
+			var x=dx+size*Math.cos(Math.PI/2-i*dig);
+			var y=dy+size*Math.sin(Math.PI/2-i*dig);
+			//绘制从当前点连接到指定点的线条
+			ctx.lineTo(x,y);
+		} 
+		ctx.closePath();  
+	}
+	
+ 	//3角星
+	createStar(ctx1, 3, 580, 60, 50);
+	ctx1.fillStyle="#f00";
+	ctx1.fill();
+	
+	//7角星
+	createStar(ctx1, 7, 580, 170, 50);
+	ctx1.fillStyle="#f00";
+	ctx1.fill(); 
+	
+	//11角星
+	createStar(ctx1, 11, 580, 280, 50);
+	ctx1.fillStyle="#0f0";
+	ctx1.fill();
+	
+	/*
+	绘制花朵
+	n 控制花朵的花瓣数
+	dx,dy 控制花朵的位置
+	size 控制花朵的大小
+	length 控制花瓣的长度
+	*/
+	function createFlower(ctx,n,dx,dy,size,length){
+		//开始创建路径
+		ctx.beginPath();
+		ctx.moveTo(dx,dy+size);
+		var dig=2*Math.PI/n;
+		for (var i = 1; i < n+1; i++) {
+			//计算控制点的坐标
+			var ctrlX=Math.sin((i-0.5)*dig)*length+dx;
+			var ctrlY=Math.cos((i-0.5)*dig)*length+dy;
+			//计算结束点的坐标
+			var x=Math.sin(i*dig)*size+dx;
+			var y=Math.cos(i*dig)*size+dy;
+			//绘制二次曲线
+			ctx.quadraticCurveTo(ctrlX,ctrlY,x,y);
+		}
+		ctx.closePath();
+	}
+	//绘制5瓣的花朵
+	createFlower(ctx1,5,700,80,30,100);
+	ctx1.fillStyle="#f00";
+	ctx1.fill();
+	
+	//绘制9瓣的花朵
+	createFlower(ctx1,9,700,200,30,60);
+	ctx1.fillStyle="#f5f";
+	ctx1.fill();
+	
+	//绘制11瓣的花朵
+	createFlower(ctx1,11,700,300,50,20);
+	ctx1.fillStyle="#f88";
+	ctx1.fill();
+	
+	</script>
+	<!-- 绘制位图 -->
+	<h2>绘制位图</h2>
+	<canvas id="mwp"  width="1100" height="800" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas=document.getElementById("mwp");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx=canvas.getContext("2d");
+	//创建image对象
+	var image=new Image();
+	//指定image对象装在图片
+	image.src="../image/manako.jpg";
+	//当图片装在完成时触发该函数
+	image.onload=function(){
+		//保持原大小绘制图片
+		ctx.drawImage(image,20,10);
+		//绘制图片时进行缩放
+		ctx.drawImage(image,610,10,200,237);
+		//从源位图中挖取一块，放大三倍后绘制到canvas上
+		ctx.drawImage(image,230,80,140,100,610,267,140*3,100*3);
+	}
+	
+	</script>
+	
+	<!-- 图形特效处理 -->
+	<h2>绘制位图</h2>
+	<canvas id="mtra"  width="400" height="300" style="border: 1px solid black"> </canvas>
+	<canvas id="mtra1"  width="420" height="280" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas2=document.getElementById("mtra");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx2=canvas2.getContext("2d");
+	
+	ctx2.fillStyle="rgba(255,0,0,0.3)";
+	//坐标系统平移到10,200点
+	ctx2.translate(10,200);
+	for (var i = 0; i < 50; i++) {
+		ctx2.translate(50,50);
+		ctx2.scale(0.9,0.9);
+		ctx2.rotate(-Math.PI/10);
+		ctx2.fillRect(0,0,150,75);
+	}
+	
+	//制作雪花飘飘的效果
+	//定义每个雪花的初始位置
+	var snowPos=new Array();
+	
+	for (var i = 0; i < 300; i++) {
+		snowPos.push({x:Math.ceil(Math.random()*420),y:Math.ceil(Math.random()*280),color:Math.ceil(Math.random()*255)+","+Math.ceil(Math.random()*255)+","+Math.ceil(Math.random()*255)});
+	}
+	
+	
+	/*  var  snowPos=[{x:20,y:4},{x:60,y:4},{x:100,y:4},
+        			{x:140,y:4},{x:180,y:4},{x:220,y:4},
+        			{x:260,y:4},{x:300,y:4},{x:340,y:4},
+        			{x:380,y:4},{x:420,y:4},
+        			{x:30,y:40},{x:70,y:40},{x:110,y:40},
+        			{x:150,y:40},{x:190,y:40},{x:230,y:40},
+        			{x:270,y:40},{x:310,y:40},{x:350,y:40},
+        			{x:390,y:40},{x:430,y:40},
+        			{x:20,y:100},{x:60,y:100},{x:100,y:100},
+        			{x:140,y:100},{x:180,y:100},{x:220,y:100},
+        			{x:260,y:100},{x:300,y:100},{x:340,y:100},
+        			{x:380,y:100},{x:420,y:100},
+        			{x:20,y:200},{x:60,y:200},{x:100,y:200},
+        			{x:140,y:200},{x:180,y:200},{x:220,y:200},
+        			{x:260,y:200},{x:300,y:200},{x:340,y:200},
+        			{x:380,y:200},{x:420,y:200}]; */
+	
+	
+		function fall(ctx){
+			//设置采用黑色作为填充色
+			ctx.fillStyle="#000";
+			//填充矩形
+			ctx.fillRect(0,0,420,280);
+
+			
+			for (var i = 0; i < snowPos.length; i++) {
+				//保存当前绘图状态
+				ctx.save();
+				//平移坐标系统
+				ctx.translate(snowPos[i].x,snowPos[i].y);
+				//旋转坐标系统
+				ctx.rotate((Math.random()*6-3)*Math.PI/30);
+				//控制雪花下落
+				snowPos[i].y+=Math.random();
+				var rand=Math.random();
+				if(rand>0.5){
+					rand=-rand;
+				}
+				snowPos[i].x+=rand;
+				if(snowPos[i].y>280){
+					snowPos[i].y=4;
+					}
+				if(snowPos[i].x>420){
+					snowPos[i].x=20;
+				}
+				if(snowPos[i].x<0){
+					snowPos[i].x=420;
+				}
+				
+				//设置采用白色(彩色)作为填充色 自动生成的数据增加 color字段，请注意
+				ctx.fillStyle="rgb("+snowPos[i].color+")";
+				//创建并绘制雪花
+				createFlower(ctx,6,0,0,4,8);
+				ctx.fill();
+				//恢复绘图状态
+				ctx.restore();
+				}
+			}
+		//获取canvas元素对应的dom对象
+		var canvas3=document.getElementById("mtra1");
+		//获取在canvas上绘图的CanvasRenderingContext2D对象
+		var ctx3=canvas3.getContext("2d");
+		setInterval("fall(ctx3)", 10);
+		
+	</script>
+	
+	<h2>叠加风格</h2>
+	选择叠加风格:<select style="width: 160px" onchange="draw(this.value);">
+	<option value="source-over">source-over</option>
+	<option value="source-in">source-in</option>
+	<option value="source-out">source-out</option>
+	<option value="source-atop">source-atop</option>
+	<option value="destination-over">destination-over</option>
+	<option value="destination-in">destination-in</option>
+	<option value="destination-out">destination-out</option>
+	<option value="destination-atop">destination-atop</option>
+	<option value="lighter">lighter</option>
+	<option value="xor">xor</option>
+	<option value="copy">copy</option>
+	 </select>
+<canvas id="msty"  width="400" height="200" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas4=document.getElementById("msty");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx4=canvas4.getContext("2d");
+	
+	var draw=function(com){
+		//保存当前绘图状态
+		ctx4.save();
+		//获取canvas元素对应的dom对象
+		ctx4.clearRect(0,0,400,200);
+		//设置填充颜色
+		ctx4.fillStyle="#f00";
+		//填充一个矩形
+		ctx4.fillRect(30,20,160,100);
+		//设置图形叠加风格
+		ctx4.globalCompositeOperation=com;
+		//设置填充颜色
+		ctx4.fillStyle="#0f0";
+		//填充一个矩形
+		ctx4.fillRect(120,60,160,100);
+		//恢复之前保存的绘图状态
+		ctx4.restore();
+	}
+	draw("source-over");
+	
+	
+	</script>
+<h2>填充风格</h2>
+<canvas id="mstc"  width="900" height="280" style="border: 1px solid black"> </canvas>
+	<script type="text/javascript">
+	//获取canvas元素对应的dom对象
+	var canvas5=document.getElementById("mstc");
+	//获取在canvas上绘图的CanvasRenderingContext2D对象
+	var ctx5=canvas5.getContext("2d");
+	
+	ctx5.save();
+	//平移坐标系统
+	ctx5.translate(30,20);
+	//创建线性渐变
+	lg=ctx5.createLinearGradient(0,0,160,80);
+	//向线性渐变上添加颜色
+	lg.addColorStop(0.2,'#f00');
+	lg.addColorStop(0.5,'#0f0');
+	lg.addColorStop(0.9,'#00f');
+	//设置使用线性渐变作为填充颜色
+	ctx5.fillStyle=lg;
+	//填充一个矩形
+	ctx5.fillRect(0,0,160,100);
+	//恢复坐标系统
+	ctx5.restore();
+	
+	//平移坐标系统
+	ctx5.translate(90,200);
+	ctx5.beginPath();
+	//添加圆弧
+	ctx5.arc(0,0,60,0,Math.PI*2,true);
+	ctx5.closePath();
+	ctx5.lineWidth=12;
+	//再次创建线性渐变
+	lg2=ctx5.createLinearGradient(-30,-30,80,40);
+	//向线性渐变上添加颜色
+	lg2.addColorStop(0.1,'#f00');
+	lg2.addColorStop(0.4,'#0f0');
+	lg2.addColorStop(0.8,'#00f');
+	//设置使用线性渐变作为边框颜色	
+	ctx5.strokeStyle=lg2;
+	ctx5.stroke();
+	ctx5.restore();
+	
+	
+	//平移坐标系统
+	ctx5.translate(130,-180);
+	//创建圆形渐变
+	lgr=ctx5.createRadialGradient(80,50,5,80,50,60);
+	//向线性渐变上添加颜色
+	lgr.addColorStop(0.2,'#ff0');
+	lgr.addColorStop(0.5,'#0ff');
+	lgr.addColorStop(0.9,'#f0f');
+	//设置使用线性渐变作为填充颜色
+	ctx5.fillStyle=lgr;
+	//填充一个矩形
+	ctx5.fillRect(0,0,160,100);
+	//恢复坐标系统
+	ctx5.restore();
+	
+	//平移坐标系统
+	ctx5.translate(60,180);
+	ctx5.beginPath();
+	//添加圆弧
+	ctx5.arc(0,0,60,0,Math.PI*2,true);
+	ctx5.closePath();
+	ctx5.lineWidth=12;
+	//再次创建圆形渐变
+	lgr2=ctx5.createRadialGradient(0,0,5,0,0,60);
+	//向线性渐变上添加颜色
+	lgr2.addColorStop(0.1,'#ff0');
+	lgr2.addColorStop(0.4,'#0ff');
+	lgr2.addColorStop(0.8,'#f0f');
+	//设置使用线性渐变作为边框颜色	
+	ctx5.fillStyle=lgr2;
+	ctx5.fill();
+	ctx5.restore();
+
+	//平移坐标系统
+	ctx5.translate(0,-180);
+	var image1=new Image();
+	image1.src="../image/laugh-24.png";
+	image1.onload=function(){
+		//创建位图填充
+		imgPattern=ctx5.createPattern(image1,"repeat");
+		//设置使用位图填充作为填充颜色
+		ctx5.fillStyle=imgPattern;
+		//填充一个矩形
+		ctx5.fillRect(0,0,160,100);
+
+		//恢复坐标系统
+		ctx5.restore();
+		ctx5.translate(60,180);
+		ctx5.beginPath();
+		ctx5.arc(0,0,60,0,2*Math.PI,true);
+		ctx5.closePath();
+		ctx5.lineWidth=12;
+		//设置使用位图填充作为边框颜色
+		ctx5.strokeStyle=imgPattern;
+		ctx5.stroke();
+	}
+		
+		ctx5.restore();
+		ctx5.translate(140,0);
+		var digdig=Math.PI/20;
+		var count=0;
+		var image2=new Image();
+		image2.src="../image/rbj.jpg";
+		image2.onload=function(){
+			//设定每X秒执行一次
+			setInterval("addRadial();", 200);
+		}
+		var addRadial=function(){
+			ctx5.globalCompositeOperation="source-over";
+			//保存当前绘图状态
+			ctx5.save();
+			ctx5.beginPath();
+			if(count==41){
+						return;			
+			}
+			ctx5.arc(280,-80,100,0,digdig*++count,false);
+		
+			//圆弧连接到圆心
+			ctx5.lineTo(280,-80);
+			ctx5.closePath();
+			//剪切路径
+			ctx5.clip();
+			//此时绘图出的图片只有路径覆盖的部分才会显示出来
+			ctx5.drawImage(image2,120,-180);
+			ctx5.restore();
+		}
+	
+		</script>
+		<h2>像素处理</h2>
+		<canvas id="msts"  width="400" height="200" style="border: 1px solid black"> </canvas>
+		使用dataurl作为img.src
+		<img id="dataurl" alt="" src=""/>
+			<script type="text/javascript">
+			//获取canvas元素对应的dom对象
+			var canvas6=document.getElementById("msts");
+			//获取在canvas上绘图的CanvasRenderingContext2D对象
+			var ctx6=canvas6.getContext("2d");
+			
+			var image3=new Image();
+			image3.src="../image/flower-128.jpg";
+			
+			image3.onload=function(){
+				//写出原图
+				ctx6.drawImage(image3,20,20);
+				
+				//用带透明度参数的方法绘制图片
+				drawImage(image3,150,20,0.5);
+			}
+			
+			function drawImage(image,x,y,alpha){
+				//绘制源图片
+				ctx6.drawImage(image,x,y);
+				//使用DataURL绘制图片
+				$('#dataurl').attr('src',canvas6.toDataURL('image/jpg'));
+				
+				//获取从xy开始，宽为image.width,高为image.height的图片数据
+				//也就是获取重新绘制图片的数据
+				var imgData=ctx6.getImageData(x,y,image.width,image.height);
+				for (var i = 0,len = imgData.data.length;i<len; i+=4) {
+					//改变每个像素的透明度
+					imgData.data[i+3]=imgData.data[i+3]*alpha;
+				}
+				//将图片数据重新放回去
+				ctx6.putImageData(imgData,x,y);
+			}
+			
+			</script>
+		
+	<br/>
+	<a href="#top">返回顶端</a>
+	<br />
+	<a name="bottom"></a>
+</form>
+</body>
+</html>
