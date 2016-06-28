@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="GB2312">
+<script type="text/javascript" src="d:\\pic\jquery.js"></script>
+<base href="d:\\pic\"/>
+</head>
+<title>zhuti</title>
+<script type="text/javascript">
+var url = location.href; 
+var par = url.substring(url.indexOf("=")+1,url.length);
+var num=["1","a","b","c","d","e","f","g"];
+function com(){
+	var str="";
+for(var i=par;i>0;i--){
+str+="<img src='"+num[i]+".jpg' style=\"weight:150px;height:100px\"/><br>";
+}
+$("#div1").html(str);
+}
+</script>
+<body onload="com()">
+<div id="div1"></div>
+</body>
+</html>

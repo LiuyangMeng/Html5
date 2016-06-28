@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--
+<base href="./html5/"/>
+-->
+</head>
+<header data-role="header" data-position="fixed">对主页的介绍</header>
+<title>html5</title>
+<script src="../js/jquery-1.12.3.js"></script>
+<script
+	src="http://webapi.amap.com/maps?v=1.3&key=8197316fd0169a04511ea97cfc73f40e"></script>
+	
+<!--
+<script src="./html5/jquery.mobile-1.4.2.js"></script> 
+<link rel="stylesheet" href="./html5/jquery.mobile-1.4.2.css"/>
+-->
+<script type="text/javascript">
+	function drawCanvas() {
+		var canvas = document.getElementById('myCanvas');
+		var ctx = canvas.getContext('2d');
+		ctx.fillStyle = '#FF0000';
+		ctx.fillRect(0, 0, 80, 100);
+		var can2 = document.getElementById('can1');
+		var can = can2.getContext("2d");
+		can.moveTo(10, 10);
+		can.lineTo(100, 60);
+		can.lineTo(10, 60);
+		can.stroke();
+		var c = document.getElementById("myCanvas1");
+		var cxt1 = c.getContext("2d");
+		cxt1.fillStyle = "#FFFF00";
+		cxt1.beginPath();
+		cxt1.arc(70, 18, 15, 0, Math.PI * 2, true);
+		cxt1.closePath();
+		cxt1.fill();
+		var c = document.getElementById("myCanvas2");
+		var cxt2 = c.getContext("2d");
+		var img = new Image();
+		img.src = "../image/oldhtml5/a.jpg";
+
+		cxt2.drawImage(img, 0, 0);
+
+	}
+	function getlocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(locationSuccess,
+					showError, {
+						// 指示浏览器获取高精度的位置，默认为false
+						enableHighAccuracy : true,
+						// 指定获取地理位置的超时时间，默认不限时，单位为毫秒
+						timeout : 5000,
+						// 最长有效期，在重复获取地理位置时，此参数指定多久再次获取位置。
+						maximumAge : 3000
+					});
+
+		} else {
+			document.getElementById("showloc").innerHTML = "Geolocation is not supported by this browser.";
+		}
+	}
+
+	function locationSuccess(position) {
+
+		document.getElementById("showloc").innerHTML = "维度: "
+				+ position.coords.latitude + "<br />经度: "
+				+ position.coords.longitude;
+
+	}
+	function showError(err) {
+
+	}
+	function locationError(error) {
+		switch (error.code) {
+		case error.TIMEOUT:
+			showError("A timeout occured! Please try again!");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			showError('We can\'t detect your location. Sorry!');
+			break;
+		case error.PERMISSION_DENIED:
+			showError('Please allow geolocation access for this to work.');
+			break;
+		case error.UNKNOWN_ERROR:
+			showError('An unknown error occured!');
+			break;
+		}
+
+	}
+
+	function getlocation1() {
+		var map, geolocation;
+		//加载地图，调用浏览器定位服务
+		map = new AMap.Map('showmap', {
+			resizeEnable : true
+		});
+		map.plugin('AMap.Geolocation', function() {
+			geolocation = new AMap.Geolocation({
+				enableHighAccuracy : true,//是否使用高精度定位，默认:true
+				timeout : 10000, //超过10秒后停止定位，默认：无穷大
+				buttonOffset : new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+				zoomToAccuracy : true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+				buttonPosition : 'RB'
+			});
+			map.addControl(geolocation);
+			geolocation.getCurrentPosition();
+			AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+			AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
+		});
+		//解析定位结果
+		function onComplete(data) {
+			/*  var str=['定位成功'];
+			 str.push('经度：' + data.position.getLng());
+			 str.push('纬度：' + data.position.getLat());
+			 str.push('精度：' + data.accuracy + ' 米');
+			 str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+			 document.getElementById('demo').innerHTML = str.join('<br>'); */
+		}
+		//解析定位错误信息
+		function onError(data) {
+			document.getElementById('demo').innerHTML = '定位失败';
+		}
+	}
+
+	//back to top
+	$(document).ready(function() {
+		var bt = $('#toolBackTop');
+		var sw = $(document).width();
+		var limitsw = (sw - 1060) / 2 - 40;
+		if (limitsw > 0) {
+			limitsw = parseInt(limitsw);
+			bt.css("right", limitsw);
+		}
+		$(window).scroll(function() {
+			var st = $(window).scrollTop();
+			if (st > 30) {
+				bt.show();
+			} else {
+				bt.hide();
+			}
+		});
+	})
+</script>
+<style type="text/css">
+p:before {
+	content: "我在之前插入"
+}
+
+.back-to {
+	bottom: 35px;
+	overflow: hidden;
+	position: fixed;
+	right: 10px;
+	width: 50px;
+	z-index: 999;
+}
+
+.back-to .back-top {
+	background: url("../image/oldhtml5/back-top.png") no-repeat scroll 0 0
+		transparent;
+	display: block;
+	float: right;
+	height: 50px;
+	margin-left: 10px;
+	outline: 0 none;
+	text-indent: -9999em;
+	width: 50px;
+}
+
+.back-to .back-top:hover {
+	background-position: -50px 0;
+}
+
+.back-to .back-bottom {
+	background: url("../image/oldhtml5/back-bottom.png") no-repeat scroll 0
+		0 transparent;
+	display: block;
+	float: right;
+	height: 50px;
+	margin-left: 10px;
+	outline: 0 none;
+	text-indent: -9999em;
+	width: 50px;
+}
+
+.back-to .back-bottom:hover {
+	background-position: -50px 0;
+}
+</style>
+<body>
+	<div data-role="header" data-position="fixed">
+		<nav data-role="navbar">
+			<ul>
+				<li class="current1"><a href="#">首页</a></li>
+				<li><a href="#">应用</a></li>
+				<li><a href="#">游戏</a></li>
+				<li><a id="portfolio" href="#">图片</a></li>
+			</ul>
+		</nav>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<p>Welcome
+	<p>
+	<div style="display: none;" class="back-to" id="toolBackTop">
+		<a title="返回顶部"
+			onclick=" $('html,body').animate({ scrollTop: 0 }, 700);"
+			class="back-top"> 返回顶部</a> <br> <br> <br> <a
+			title="返回底部"
+			onclick="$('html,body').animate({ scrollTop: $(document).height()}, 700);"
+			class="back-bottom"> 返回低部</a>
+	</div>
+
+	<audio src="../image/oldhtml5/onekiss.mp3" controls="controls">浏览器不支持HTML5
+		audio
+	</audio>
+	<br>
+	<br>
+	<br>
+	<video width="320" height="240" controls="controls">
+		<source src="../image/oldhtml5/love.mp4" type="video/mp4">
+		<track kind="subtitles" src="./html5/hope.srt" srclang="zh"
+			label="Chinese">
+	</video>
+	<br>
+
+	<abbr title="mengliuyang">men.</abbr>
+	<br>
+	<acronym title="World Wide Web">WWW</acronym>
+	<br>
+	<bdo dir="rtl">meng liu yang</bdo>
+	<br>
+	<bdo dir="ltr">meng liu yang</bdo>
+	<br>
+	<bdo dir="rtl">孟留洋</bdo>
+	<br>
+	<b>123<b><br> <big>123<big><br> 我是：
+					<blockquote>孟留洋，我人在......</blockquote> <br>
+					<button type="button" autofocus="true" onclick="drawCanvas()">点击我</button>
+					<br>
+					<canvas id="myCanvas">不支持HTML5 canvas</canvas> <br>
+					<canvas id="can1" width="200" height="100"
+						style="border: 1px solid #ff0000;">
+your brower does not support the canvas element.
+</canvas> <br>
+					<canvas id="myCanvas1" width="200" height="100"
+						style="border: 1px solid #c3c3c3;">
+Your browser does not support the canvas element.
+</canvas> <br>
+					<canvas id="myCanvas2" width="500" height="400"
+						style="border: 1px solid #c3c300;">
+Your browser does not support the canvas element.
+</canvas> <br>
+					<table border="2">
+						<caption>This is a table</caption>
+						<tr>
+							<td>mingzi</td>
+							<td>nianling</td>
+						</tr>
+						<tr>
+							<td>孟留洋</td>
+							<td align="center">22</td>
+						</tr>
+					</table> <br> <em>我被强调</em><br> <strong>我很重要</strong><br> <dfn>定义项目</dfn><br>
+					<code>public static void</code><br> <samp>样本文本</samp><br>
+					<kbd>键盘文本</kbd><br> <var>变量</var><br> <cite>杂志标题</cite><br>
+					<table>
+						<col style="color: red" />
+						<col span="2" style="color: yellow" />
+						<tr>
+							<td>1</td>
+							<td>2</td>
+							<td>3</td>
+							<td>4</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>2</td>
+							<td>3</td>
+							<td>4</td>
+						</tr>
+					</table> <br>
+					<menu>
+						<command onclick="alert('Hello World')">
+ie9支持我!</command>
+					</menu> <br> <input id="listin" list="phone" /> <datalist id="phone">
+						<option value="iphone">
+						<option value="sangsung">
+						<option value="huawei">
+						<option value="jinli">
+						<option value="jinshi">
+					</datalist><br>
+					<dl>
+						<dt>phone</dt>
+						<dd>phone is called!</dd>
+						<dt>mirror</dt>
+						<dd>just for fun</dd>
+					</dl> <br> a apple is <del>20</del>&nbsp;12 yuan<br> <details>
+						<summary>Copyright 2011.</summary>
+						<p>All pages and graphics on this web site are the property of
+							W3School.</p>
+					</details><br>
+					<table border="1">
+						<tr>
+							<th>一月 <dialog open>这是打开的对话窗口</dialog></th>
+							<th>二月</th>
+							<th>三月</th>
+						</tr>
+						<tr>
+							<td>31</td>
+							<td>28</td>
+							<td>31</td>
+						</tr>
+					</table> <br>
+					<dir>
+						<li>HTML</li>
+						<li>XHTML</li>
+						<li>CSS</li>
+					</dir> <br> <embed src="http://www.w3school.com.cn/i/helloworld.swf" /><br>
+					<fieldset>
+						<legend>个人信息</legend>
+						name:<input type="text" /> age:<input type="text" />
+					</fieldset> 如果信息没有边框，说明你的浏览器不支持<br>
+					<figure>
+						<figcaption>文档中的插图</figcaption>
+						<img src="../image/oldhtml5/a.jpg" height="150" width="200"
+							alt="a.jpg"
+							style="border-radius: 10px 5px 10px 5px; -moz-border-radius: 10px 5px;" />
+					</figure> <font size="3" color="green">font属性</font> <footer
+						data-position="fixed">
+						<p>create by meng(footer)</p>
+						<p>
+							contact me<a href="mailto:610860@qq.com">610860@qq.com</a>.
+						</p>
+					</footer>
+					<frameset rows="70%,30%">
+						<noframes>
+							<!--  <body>Your browser does not handle frames!</body>-->
+						</noframes>
+
+						<frame src="./aa1.html" />
+						<frame src="./aa2.html" />
+					</frameset>
+					<h1>这是标题 1</h1>
+					<h2>这是标题 2</h2>
+					<h3>这是标题 3</h3>
+					<h4>这是标题 4</h4>
+					<h5>这是标题 5</h5>
+					<h6>这是标题 6</h6>
+					<hr> <i>我是斜体</i><br> <iframe
+						src="../image/oldhtml5/a.jpg" name="iframe" height="200"
+						width="300" alt="a.jpg"></iframe><br> <label for="male">Male</label>
+					<input type="radio" name="sex" id="male" /> <br /> <label
+					for="female">Female</label> <input type="radio" name="sex"
+					id="female" />
+					<ol>
+						<li>Coffee</li>
+						<li>Tea</li>
+						<li>Milk</li>
+					</ol>
+
+					<ul>
+						<li>Coffee</li>
+						<li>Tea</li>
+						<li>Milk</li>
+					</ul> <br>
+
+					<p>请点击图像上的星球，把它们放大。</p> <img
+					src="http://www.w3school.com.cn/i/eg_planets.jpg" border="0"
+					usemap="#planetmap" alt="Planets" /> <map name="planetmap"
+						id="planetmap">
+
+						<area shape="circle" coords="180,139,14"
+							href="http://www.w3school.com.cn/example/html/venus.html"
+							target="_blank" alt="Venus" />
+
+						<area shape="circle" coords="129,161,10"
+							href="http://www.w3school.com.cn/example/html/mercur.html"
+							target="_blank" alt="Mercury" />
+
+						<area shape="rect" coords="0,0,110,260"
+							href="http://www.w3school.com.cn/example/html/sun.html"
+							target="_blank" alt="Sun" />
+					</map> mark标签<br>
+					<p>
+						mark标签的
+						<mark>学习</mark>
+					</p> <br> <meter low="69" high="80" max="100" optimum="100"
+						value="72">C</meter><br> <input type="range" max="100"
+					min="0" value="5" /><br>
+					<nav>
+						<a href="aa1.html">tou</a> <a href="aa2.html">mid</a> <a
+							href="aa1.html">last</a>
+					</nav> <br> <select>
+						<optgroup label="fruit">
+							<option value="apple">apple</option>
+							<option value="orange">orange</option>
+							<option value="grape">grape</option>
+						</optgroup>
+						<optgroup label="vegetable">
+							<option value="tomact">tomact</option>
+							<option value="fee">fee</option>
+						</optgroup>
+				</select><br>
+					<form oninput="x.value=parseInt(a.value)+parseInt(b.value)">
+						0 <input type="range" id="a" value="100">100 +<input
+							type="number" id="b" value="50"> =
+						<output name="x" for="a b"></output>
+						<br> email: <input type="email" required="required" /><br>
+						date:<input type="date" required="required" /><br> time:<input
+							type="time" required="required" /><br> number:<input
+							type="number" required="required" /><br> search:<input
+							type="search" required="required" /><br> color:<input
+							type="color" required="required" /><br> tel:<input
+							type="tel" required="required" /><br>
+						<ruby>
+							漢
+							<rt><rp>(</rp>ㄏㄢˋ
+								<rp>)</rp>
+							</rt>
+						</ruby>
+						<br> <s>手机便宜了</s><br>
+						<section>
+							<h4>PRC</h4>
+							<p>The People's Republic of China was born in 1949...</p>
+						</section>
+						<br> 最后是<sub>下标</sub><br> 前面是<sup>上标</sup><br> rili<input
+							type="calendar" /><b><br> <svg
+								xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+  <polygon points="100,10 40,180 190,60 10,60 160,180"
+									style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+</svg><br>
+							<div id="showloc">此处显示定位信息</div> <input id="loc" type="button"
+							onclick="getlocation()" value="获取定位经纬度" /><br>
+							<div id="showmap" style="width: 400px; height: 200px;">此处显示静态地图定位</div>
+							<input id="loc1" type="button" onclick="getlocation1()"
+							value="获取静态地图定位" /><br> <header data-position="fixed">
+								<hgroup>
+									<h2>这是header中</h2>
+									<h3>的hgroup</h3>
+								</hgroup>
+							</header><br> <input type="button" value="测试web storage"
+							onclick="ceshistorage()" /> <br> <input type="button"
+							value="测试storage" onclick="createstorage()" />&nbsp;<input
+							type="button" value="删除storage" onclick="deletestorage()" /> <br>
+							<input type="text" placeholder="请输入内容" /><br>
+							<div id="article">完全匹配选择器article</div>
+							<hr>
+							<div id="article1">包含选择器article1</div>
+							<div id="article2">包含选择器article2</div>
+							<div id="article3">包含选择器article3</div>
+							<hr>
+							<div id="article1">首字符匹配选择器article1</div>
+							<div id="subarticle">首字符匹配选择器subarticle</div>
+							<div id="article2">首字符匹配选择器article2</div>
+							<hr>
+							<div id="article1">尾字符匹配选择器article1</div>
+							<div id="subarticle">尾字符匹配选择器subarticle</div>
+							<div id="article">尾字符匹配选择器article</div>
+							<hr>
+							<style type="text/css">
+[id=article] {
+	color: red;
+}
+
+[id$=article] {
+	color: red;
+}
+
+[id^=article] {
+	color: red;
+}
+
+[id*=article] {
+	color: red;
+}
+
+[id=article] {
+	box-shadow: 3px 4px 2px #000;
+	text-shadow: 3px 4px 2px blue;
+	-moz-box-shadow: 3px 4px 2px #000;
+	-moz-text-shadow: 3px 4px 2px blue;
+	padding: 5px 4px;
+}
+</style> <br>
+							<div data-role="collapsible">
+								<h3>可折叠区域</h3>
+								<p>这是一个测试的可折叠的区域，默认情况下区域是开启状态，当点击标题区域时内容区域就会被隐藏的</p>
+							</div>
+							<hr>
+							<div data-role="collapsible-set">
+								<section data-role="collapsible">
+									<h3>页面布局</h3>
+									<p>这是一个测试的可折叠的区域，默认情况下区域是开启状态，当点击标题区域时内容区域就会被隐藏的</p>
+								</section>
+								<section data-role="collapsible">
+									<h3>本地存储</h3>
+									<p>本地存储这是一个测试的可折叠的区域，默认情况下区域是开启状态，当点击标题区域时内容区域就会被隐藏的</p>
+								</section>
+								<section data-role="collapsible">
+									<h3>地理定位</h3>
+									<p>地理定位的可折叠的区域，默认情况下区域是开启状态，当点击标题区域时内容区域就会被隐藏的</p>
+								</section>
+							</div> <br>
+							<div data-role="fieldcontain">
+								<lable for="slider">slider</lable>
+								<input type="range" name="'range" value="2" min="0" max="15" />
+							</div> <br>
+							<div data-role="fieldcontain">
+								<lable for="slider">toggle switches:</lable>
+								<select name="slider" data-role="slider">
+									<option value="off">off</option>
+									<option value="on">on</option>
+								</select>
+							</div> <br>
+							<fieldset data-role="controlgroup">
+								<legend>请选择你的年龄范围：</legend>
+								<input type="radio" name="radio-1" id="radio-1" value="any" />
+								<label for="radio-1">不限</label> <input type="radio"
+									name="radio-1" id="radio-2" value="5-12" checked="true" /> <label
+									for="radio-2">5-12</label> <input type="radio" name="radio-1"
+									id="radio-3" value="13-22" /> <label for="radio-3">13-22</label>
+								<input type="radio" name="radio-1" id="radio-4" value="23以上" />
+								<label for="radio-4">23以上</label>
+							</fieldset> <br>
+							<fieldset data-role="controlgroup" data-type="horizontal">
+								<legend>请选择你的年龄范围：</legend>
+								<input type="radio" name="radio-2" id="radio-11" value="any" />
+								<label for="radio-11">不限</label> <input type="radio"
+									name="radio-2" id="radio-22" value="5-12" checked="true" /> <label
+									for="radio-22">5-12</label> <input type="radio" name="radio-2"
+									id="radio-33" value="13-22" /> <label for="radio-33">13-22</label>
+								<input type="radio" name="radio-2" id="radio-44" value="23以上" />
+								<label for="radio-44">23以上</label>
+							</fieldset> <br>
+							<fieldset data-role="controlgroup">
+								<legend>请选择你的爱好：</legend>
+								<input type="checkbox" name="checkbox-1" id="checkbox-1"
+									value="1" /> <label for="checkbox-1">游泳</label> <input
+									type="checkbox" name="checkbox-2" id="checkbox-2" value="2" />
+								<label for="checkbox-2">跑步</label> <input type="checkbox"
+									name="checkbox-3" id="checkbox-3" value="3" /> <label
+									for="checkbox-3">篮球</label> <input type="checkbox"
+									name="checkbox-4" id="checkbox-4" value="4" /> <label
+									for="checkbox-4">瑜伽</label> <input type="checkbox"
+									name="checkbox-5" id="checkbox-5" value="5" /> <label
+									for="checkbox-5">游泳</label>
+							</fieldset> <br>
+							<fieldset data-role="controlgroup" data-type="horizontal">
+								<legend>请选择你的爱好：</legend>
+								<input type="checkbox" name="checkbox-1" id="checkbox-11"
+									value="1" /> <label for="checkbox-11">游泳</label> <input
+									type="checkbox" name="checkbox-2" id="checkbox-22" value="2" />
+								<label for="checkbox-22">跑步</label> <input type="checkbox"
+									name="checkbox-3" id="checkbox-33" value="3" /> <label
+									for="checkbox-33">篮球</label> <input type="checkbox"
+									name="checkbox-4" id="checkbox-44" value="4" /> <label
+									for="checkbox-44">瑜伽</label> <input type="checkbox"
+									name="checkbox-5" id="checkbox-55" value="5" /> <label
+									for="checkbox-55">游泳</label>
+							</fieldset> <br>
+							<div data-role="controlgroup">
+								<legend>单独下拉框(无):</legend>
+								<select name="select" id="select1">
+									<option value="1">样式1</option>
+									<option value="2">样式2</option>
+									<option value="3">样式3</option>
+									<option value="4">样式4</option>
+								</select>
+							</div> <br>
+							<div data-role="controlgroup" data-native-menu="false">
+								<legend>单独下拉框(分组):</legend>
+								<select name="select" id="select2">
+									<optgroup label="组1" />
+									<option value="1">样式1</option>
+									<option value="2">样式2</option>
+									<optgroup label="组2" />
+									<option value="3">样式3</option>
+									<option value="4">样式4</option>
+								</select>
+							</div> <br>
+							</fieldset> <br>
+							<div data-role="controlgroup">
+								<legend>单独下拉框(禁用某个):</legend>
+								<select name="select" id="select3">
+									<option value="1">样式1</option>
+									<option value="2" disabled>样式2</option>
+									<option value="3">样式3</option>
+									<option value="4">样式4</option>
+								</select>
+							</div> <br>
+							</fieldset> <br>
+							<div data-role="controlgroup">
+								<legend>单独下拉框(可多选):</legend>
+								<select name="select" id="select4" data-native-menu="true"
+									multiple>
+									<option value="1">样式1</option>
+									<option value="2">样式2</option>
+									<option value="3">样式3</option>
+									<option value="4">样式4</option>
+								</select>
+							</div> <br> <a name="bottom1" id="bottom1">&nbsp;</a> <br> <input
+							type="submit" value="提交" />
+					</form>
+</body>
+<footer data-role="footer" data-position="fixed">
+	<nav data-role="navbar">
+		<ul>
+			<li><a href="#">首页</a></li>
+			<li><a href="#">应用</a></li>
+			<li><a href="#">首页</a></li>
+			<li><a href="#">应用</a></li>
+		</ul>
+	</nav>
+</footer>
+<script type="text/javascript">
+	function ceshistorage() {
+		if (window.localStorage) {
+			alert("浏览器支持localStorage");
+		}
+		if (window.sessionStorage) {
+			alert("浏览器支持sessionStorage");
+		}
+	}
+	function createstorage() {
+		localStorage.setItem("name", "mengliuyang");
+		alert(localStorage.getItem("name"));
+	}
+	function deletestorage() {
+		localStorage.removeItem("name");
+		alert(localStorage.getItem("name"));
+	}
+</script>
+</html>
